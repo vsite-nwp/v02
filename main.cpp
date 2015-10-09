@@ -1,6 +1,8 @@
 #include "nwpwin.h"
 #include "res.h"
 
+// TODO: prepare classes (Edit, Button, ListBox) for child windows
+// TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
 {
@@ -12,18 +14,28 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	return 0;		
+	// TODO: create all child windows
+	// TODO: disable "Remove" button
+	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
+			// TODO: close main window
 			break;
 		case ID_HELP_ABOUT:
+			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
+			// TODO: get text from edit control
+			// TODO: add string to listbox control
+			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
+			// TODO: get listbox selection
+			// TODO: if there is a selection, delete selected string
+			// TODO: disable "Remove" button if listbox is empty
 			break;
 	}
 }
