@@ -37,6 +37,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 100, 25, 100, 200);
 	// TODO: disable "Remove" button
 
+
 	return 0;
 }
 
@@ -44,9 +45,11 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
+			MessageBox(*this, "Upisi tekst u edit i klikni Add za dodavanje u listbox. Remove mice tekst iz listboxa.", "NWP", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
