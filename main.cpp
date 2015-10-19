@@ -1,7 +1,15 @@
 #include "nwpwin.h"
 #include "res.h"
 
+
+
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
+class Edit :public Window {
+public:
+	std::string ClassName() { return "EDIT"; }
+
+};
+
 // TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
@@ -15,6 +23,8 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
+	Edit edit; 
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER);
 	// TODO: disable "Remove" button
 	return 0;
 }
