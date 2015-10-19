@@ -2,6 +2,24 @@
 #include "res.h"
 
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
+class Edit:public Window{
+public:
+	 std::string ClassName()
+		 {return "Edit";}
+}
+
+class Button:public Window{
+public:
+	std::string ClassName()
+	{return "Button";}
+}
+class ListBox:public Window{
+public:
+	std::string ClassName()
+	{return "ListBox2";}
+}
+
+
 // TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
