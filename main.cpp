@@ -2,6 +2,25 @@
 #include "res.h"
 
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
+class Edit : public Window
+{
+public:
+	std::string ClassName() { return "EDIT"; }
+};
+
+class Button : public Window
+{
+public:
+	std::string ClassName() { return "BUTTON"; }
+};
+
+class ListBox : public Window
+{
+public:
+	std::string ClassName() { return "LISTBOX"; }
+};
+
+
 // TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
@@ -14,7 +33,13 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
+	RECT rect; 
+	GetClientRect(*this, &rect);
 	// TODO: create all child windows
+	Edit edit;
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, IDC_EDIT, 100, 20, 50, 20);
+	Button btn_add;
+	btn_add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 100, 40, 50, 20);
 	// TODO: disable "Remove" button
 	return 0;
 }
