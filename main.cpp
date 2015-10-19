@@ -45,15 +45,19 @@ void MainWindow::OnCommand(int id){
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
-			char buffer[256];
-			if (GetWindowText(edit, buffer, 256))
+			char bufferEdit[256];
+			if (GetWindowText(edit, bufferEdit, 256))
 			{
-				SendMessage(listBox, LB_INSERTSTRING, 0, (LPARAM)buffer);
+				SendMessage(listBox, LB_INSERTSTRING, 0, (LPARAM)bufferEdit);
 			}
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
+			char buffer[256];
+			if (GetWindowText(listBox, buffer, 256))
+			{
+				
+			}
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
 			break;
