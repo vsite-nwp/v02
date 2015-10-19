@@ -2,6 +2,13 @@
 
 IDI_V2 ICON "v2.ico"
 
+STRINGTABLE
+BEGIN
+	IDS_Add "Add"
+	IDS_Remove "Remove"
+END
+
+
 IDM_V2 MENU
 BEGIN
     POPUP "&File"

@@ -6,6 +6,10 @@
 
 class MainWindow : public Window
 {
+public:
+	Edit edit;
+	Button button;
+	ListBox listBox;
 protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
@@ -14,22 +18,38 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	//texstbox
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 220, 10, 150, 50);
+
+	char s[128];
+	//Kreirai buttoni
+	LoadString(0, IDS_Add, s, sizeof s);	
+	button.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, s, IDC_ADD, 220, 70, 150, 50);
+	LoadString(0, IDS_Remove, s, sizeof s);
+	button.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, s, IDC_REMOVE, 220, 130, 150, 50);
+
+	//Listbox
+	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 200, 300);
+
+	
+
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
+			char buffer[256];
+			if (GetWindowText(edit, buffer, 256))
+			{
+				SendMessage(listBox, LB_INSERTSTRING, 0, (LPARAM)buffer);
+			}
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
