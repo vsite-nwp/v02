@@ -6,18 +6,18 @@ class Edit:public Window{
 public:
 	 std::string ClassName()
 		 {return "Edit";}
-}
+};
 
 class Button:public Window{
 public:
 	std::string ClassName()
 	{return "Button";}
-}
+};
 class ListBox:public Window{
 public:
 	std::string ClassName()
 	{return "ListBox2";}
-}
+};
 
 
 // TODO: derive from Window, override ClassName
@@ -32,6 +32,10 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
+	Edit edit; edit.Create(* this,WS_CHILD | WS_VISIBLE | WS_BORDER,"",IDC_EDIT,120,10,100,24 );
+	Button button_add; button_add.Create(* this,WS_CHILD | WS_VISIBLE,"add",IDC_EDIT,120,40,100,24);
+	Button button_remove; button_remove.Create(* this,WS_CHILD | WS_VISIBLE,"remove",IDC_EDIT,120,40,100,24);
+	ListBox listbox; listbox.Create(* this,WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,"listbox",IDC_EDIT,120,40,100,24);
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
 	return 0;
