@@ -38,15 +38,18 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
 	
-	CreateWindow("LISTBOX", " ", WS_CHILD | WS_VISIBLE|WS_BORDER,
-		0, 0, 200, 100, hw, (HMENU)IDC_LB, 0, 0);
-	CreateWindow("EDIT", " ", WS_CHILD | WS_VISIBLE | WS_BORDER,
-		300, 0, 100, 30, hw, (HMENU)IDC_EDIT, 0, 0);
-	CreateWindow("BUTTON", "Add ", WS_CHILD | WS_VISIBLE | WS_BORDER,
-		300, 50, 100, 30, hw, (HMENU)IDC_ADD, 0, 0);
-	CreateWindow("BUTTON", "Remove ", WS_CHILD | WS_VISIBLE | WS_BORDER,
-		300, 100, 100, 30, hw, (HMENU)IDC_REMOVE, 0, 0);
+	
+	Edit edit;
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER," ", IDC_EDIT,150,0,100,30);
 
+	ListBox listbox;
+	listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 0, 0, 100, 150);
+
+	Button button_add;
+	button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 150, 50, 100, 30);
+
+	Button button_remove;
+	button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 150, 100, 100, 30);
 	
 	// TODO: disable "Remove" button
 	return 0;
@@ -62,6 +65,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			GetDlgItemText(hw, IDC_LB, " asdsda",10);
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
 			break;
