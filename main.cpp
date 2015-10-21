@@ -43,30 +43,54 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 
 	//disable "Add" button until something is written in edit 
-	EnableWindow(GetDlgItem(*this, IDC_ADD), false);
+	//EnableWindow(GetDlgItem(*this, IDC_ADD), false);
 
 
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
-	switch(id){
-		case ID_FILE_EXIT:
-			// TODO: close main window
-			break;
-		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
-			break;
-		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
-			break;
-		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
-			break;
+	switch (id){
+	case ID_FILE_EXIT:
+		// TODO: close main window
+
+		PostMessage(*this, WM_CLOSE, 0, 0);
+
+		break;
+
+	case ID_HELP_ABOUT:
+		// TODO: show dialog with text
+		MessageBox(*this, "ABOUT", "NWP", MB_OK | MB_ICONWARNING);
+
+		break;
+	
+		/*
+	case IDC_EDIT:
+	{
+		int length = GetWindowTextLength(GetDlgItem(*this, IDC_EDIT));
+
+		if (length > 0)
+			EnableWindow(GetDlgItem(*this, IDC_ADD), true);
+	}
+	*/
+	case IDC_ADD:
+		// TODO: get text from edit control
+		char buff[1024];
+		GetDlgItemText(*this, IDC_EDIT, buff, sizeof buff);
+
+		// TODO: add string to listbox control
+		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buff);
+		SetWindowText(GetDlgItem(*this, IDC_EDIT), "");
+
+		// TODO: enable "Remove" button
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+		break;
+
+	case IDC_REMOVE:
+		// TODO: get listbox selection
+		// TODO: if there is a selection, delete selected string
+		// TODO: disable "Remove" button if listbox is empty
+		break;
 	}
 }
 
