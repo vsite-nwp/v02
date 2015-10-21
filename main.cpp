@@ -1,7 +1,7 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
+
 class Edit : public Window
 {
 public:
@@ -20,9 +20,6 @@ public:
 	std::string ClassName() { return "LISTBOX"; }
 };
 
-
-// TODO: derive from Window, override ClassName
-
 class MainWindow : public Window
 {
 protected:
@@ -33,8 +30,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	
 	Edit edit;
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, IDC_EDIT, 120, 10, 80, 20);
 	
@@ -46,6 +41,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	listbox.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER,NULL, IDC_LB, 10, 10, 100, 200);
 
 	// TODO: disable "Remove" button
+	
 	return 0;
 }
 
