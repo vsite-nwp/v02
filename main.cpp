@@ -34,10 +34,10 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
-	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 205, 5, 150, 40);
-	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 205, 55, 150, 40);
-	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 205, 105, 150, 40);
-	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 5, 5, 180, 150);
+	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 180, 150);
+	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 202, 10, 150, 40);
+	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 202, 60, 150, 40);
+	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 202, 110, 150, 40);
 
 	// TODO: disable "Remove" button
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
@@ -64,13 +64,16 @@ void MainWindow::OnCommand(int id){
 
 		break;
 	
-		/*
+	/*
 	case IDC_EDIT:
 	{
-		int length = GetWindowTextLength(GetDlgItem(*this, IDC_EDIT));
+	int num = SendDlgItemMessage(*this, IDC_EDIT, LB_GETTEXTLEN, 0, 0);
 
-		if (length > 0)
-			EnableWindow(GetDlgItem(*this, IDC_ADD), true);
+	// TODO: disable "ADD" button if edit is empty
+	if (num > 0)
+		EnableWindow(GetDlgItem(*this, IDC_ADD), true);
+	else if (num == 0)
+		EnableWindow(GetDlgItem(*this, IDC_ADD), false);
 	}
 	*/
 	case IDC_ADD:
@@ -88,8 +91,26 @@ void MainWindow::OnCommand(int id){
 
 	case IDC_REMOVE:
 		// TODO: get listbox selection
+		int selectedID = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+
 		// TODO: if there is a selection, delete selected string
-		// TODO: disable "Remove" button if listbox is empty
+		if (selectedID >= 0){
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, selectedID, 0);
+
+			int num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+		
+			// TODO: disable "Remove" button if listbox is empty
+			if (num > 0)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			else if (num == 0)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			//kada obrisemo zadnji koji je selektiran, smanji selectedID za jedan!
+			if (num == selectedID)
+				--selectedID;
+
+			//Kada obrisemo zadnji automatski selektiraj zadnji!
+			SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, selectedID, 0);
+		}
 		break;
 	}
 }
