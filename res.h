@@ -11,3 +11,5 @@
 
 #define IDS_Add 501
 #define IDS_Remove 502
+#define IDS_AboutTitle 503
+#define IDS_AboutText 504

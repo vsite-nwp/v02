@@ -39,8 +39,10 @@ void MainWindow::OnCommand(int id){
 			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			char s[16]; 
-			
+			char stitle[16], stext[32];
+			LoadString(0, IDS_AboutTitle, stitle, sizeof stitle);
+			LoadString(0, IDS_AboutText, stext, sizeof stext);
+			MessageBox(*this, stext, stitle, MB_OK | MB_TOPMOST);
 			break;
 		case IDC_ADD:
 			char bufferEdit[256];
