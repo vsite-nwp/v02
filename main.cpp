@@ -33,14 +33,17 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	RECT rect; 
-	GetClientRect(*this, &rect);
 	// TODO: create all child windows
+	
 	Edit edit;
-	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, IDC_EDIT, 200, 20, 80, 20);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, IDC_EDIT, 120, 10, 80, 20);
+	
 	Button btn_add, btn_rem;
-	btn_add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 50, 80, 20);
-	btn_rem.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 80, 80, 20);
+	btn_add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 120, 40, 80, 20);
+	btn_rem.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 120, 70, 80, 20);
+
+	ListBox listbox;
+	listbox.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER,NULL, IDC_LB, 10, 10, 100, 200);
 
 	// TODO: disable "Remove" button
 	return 0;
