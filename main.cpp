@@ -48,11 +48,12 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			
 			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			
+			MessageBox(*this, "About this app...", "About", MB_OK | WS_VISIBLE | MB_ICONINFORMATION | WS_CHILD);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
