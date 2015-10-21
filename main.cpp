@@ -21,7 +21,6 @@ public:
 
 };
 
-
 // TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
@@ -35,7 +34,18 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
+	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 205, 5, 150, 40);
+	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 205, 55, 150, 40);
+	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 205, 105, 150, 40);
+	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 5, 5, 180, 150);
+
 	// TODO: disable "Remove" button
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+
+	//disable "Add" button until something is written in edit 
+	EnableWindow(GetDlgItem(*this, IDC_ADD), false);
+
+
 	return 0;
 }
 
