@@ -40,8 +40,8 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ListBox listbox;
 	listbox.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER,NULL, IDC_LB, 10, 10, 100, 200);
 
-	// TODO: disable "Remove" button
 	EnableWindow(btn_rem, false);
+
 	return 0;
 }
 
@@ -57,6 +57,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
 			break;
