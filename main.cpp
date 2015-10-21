@@ -41,7 +41,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	listbox.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER,NULL, IDC_LB, 10, 10, 100, 200);
 
 	// TODO: disable "Remove" button
-	
+	EnableWindow(btn_rem, false);
 	return 0;
 }
 
