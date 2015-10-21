@@ -1,9 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
-
 class MainWindow : public Window
 {
 public:
@@ -26,7 +23,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	LoadString(0, IDS_Add, s, sizeof s);	
 	button.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, s, IDC_ADD, 220, 70, 150, 50);
 	LoadString(0, IDS_Remove, s, sizeof s);
-	button.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, s, IDC_REMOVE, 220, 130, 150, 50);
+	button.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, s, IDC_REMOVE, 220, 130, 150, 50);
 
 	//Listbox
 	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 200, 300);
@@ -42,24 +39,32 @@ void MainWindow::OnCommand(int id){
 			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			char s[16]; 
+			
 			break;
 		case IDC_ADD:
 			char bufferEdit[256];
 			if (GetWindowText(edit, bufferEdit, 256))
 			{
 				SendMessage(listBox, LB_INSERTSTRING, 0, (LPARAM)bufferEdit);
+				EnableWindow(button, true);
 			}
-			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
-			char buffer[256];
-			if (GetWindowText(listBox, buffer, 256))
+			//dohvat selektiranog indexa
+			int index = SendMessage(listBox, LB_GETCURSEL, 0, 0);
+			if (index > -1)
 			{
-				
+				SendMessage(listBox, LB_DELETESTRING, index, 0);
 			}
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+
+			//provjera broja èlanova radi disablea buttona
+			int count = SendMessage(listBox, LB_GETCOUNT, 0, 0);
+			if (count <= 0)
+			{
+				EnableWindow(button, false);
+			}
+
 			break;
 	}
 }
