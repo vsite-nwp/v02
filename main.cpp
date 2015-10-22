@@ -59,7 +59,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		case ID_HELP_ABOUT:
 			
-			MessageBox(*this, "About this app...", "About", MB_OK | WS_VISIBLE | MB_ICONINFORMATION | WS_CHILD);
+			MessageBox(*this, "About this app...", "About", MB_OK|MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
 			char edtxt[64];
