@@ -56,10 +56,19 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "About this app...", "About", MB_OK | WS_VISIBLE | MB_ICONINFORMATION | WS_CHILD);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char edtxt[64];
+			HWND remButt;
+			if (GetDlgItemText(*this, IDC_EDIT, edtxt, 64)) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)edtxt);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				int count;
+				count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+				if (count) {
+					remButt = GetDlgItem(*this, IDC_REMOVE);
+					EnableWindow(remButt, true);
+				}
+				
+			}
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
