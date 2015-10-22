@@ -1,6 +1,12 @@
 #include "nwpwin.h"
 #include "res.h"
 
+//moji defineovi za velicinu glavnog prozora
+#define X_ORIGIN 100
+#define Y_ORIGIN 100
+#define MAIN_WIDTH 250
+#define MAIN_HEIGHT 300
+
 
 class Edit : public Window
 {
@@ -94,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu,X_ORIGIN,Y_ORIGIN,MAIN_WIDTH,MAIN_HEIGHT);	
 	// set icons
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
