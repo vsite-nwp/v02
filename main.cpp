@@ -100,10 +100,9 @@ void MainWindow::OnCommand(int id){
 			int num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 		
 			// TODO: disable "Remove" button if listbox is empty
-			if (num > 0)
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
-			else if (num == 0)
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), num > 0);
+
 			//kada obrisemo zadnji koji je selektiran, smanji selectedID za jedan!
 			if (num == selectedID)
 				--selectedID;
