@@ -58,7 +58,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 		int num;
 		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 		if (num == 0) {
-			EnableWindow(disable_button, false);
+			EnableWindow(disable_button, false); //deaktiviraj remove gumb prilikom pokretanja programa
 		}
 
 	
@@ -68,17 +68,20 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_FILE_EXIT:
+		
 		// TODO: close main window
+		PostQuitMessage(0);
 		break;
 	case ID_HELP_ABOUT:
 		// TODO: show dialog with text
+		MessageBox(*this, "Unesite tekst sa Add, Uklonite tekst sa Remove ", "Vježba2",WS_CHILD | WS_VISIBLE );
 		break;
 	case IDC_ADD:
 		char  word[32];
 		// TODO: get text from edit control
-		GetDlgItemText(*this, IDC_EDIT, word, 32);
+		GetDlgItemText(*this, IDC_EDIT, word, 32);  //pokupi string iz edita u word
 		// TODO: add string to listbox control
-		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(word));
+		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(word)); //pošalji string u listbox
 		// TODO: enable "Remove" button
 		
 		HWND enable_button;
@@ -86,16 +89,25 @@ void MainWindow::OnCommand(int id) {
 		int num;
 		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 		if (num) {
-			EnableWindow(enable_button, true);
+			EnableWindow(enable_button, true); //ako je word dodan aktiviraj gumb "Remove"
 		}
 		break;
 	case IDC_REMOVE:
-		// TODO: get listbox selection
+		
 		// TODO: disable "Remove" button if listbox is empty
+		
+		HWND disable_button;
+		disable_button = GetDlgItem(*this, IDC_REMOVE);
+		int num1;
+		num1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+		if (num1 == 0) {
+			EnableWindow(disable_button, false);  //ako je listbox prazan, deaktiviraj gumb "Remove"
+		}
+		// TODO: get listbox selection
 		int id;
 		id = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 		if (id >=0)
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, WPARAM(id), NULL);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, WPARAM(id), NULL); //briši odabrani string iz listboxa
 		break;
 	}
 }
