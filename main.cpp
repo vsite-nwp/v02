@@ -53,13 +53,9 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 150, 100, 100, 30);
 	
 	// TODO: disable "Remove" button
-	HWND disable_button;
-		disable_button=GetDlgItem(*this, IDC_REMOVE);
-		int num;
-		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
-		if (num == 0) {
-			EnableWindow(disable_button, false); //deaktiviraj remove gumb prilikom pokretanja programa
-		}
+	
+	EnableWindow(button_remove, false); //deaktiviraj remove gumb prilikom pokretanja programa
+		
 
 	
 	return 0;
