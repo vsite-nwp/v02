@@ -70,7 +70,7 @@ void MainWindow::OnCommand(int id) {
 		break;
 	case ID_HELP_ABOUT:
 		// TODO: show dialog with text
-		MessageBox(*this, "Unesite tekst sa Add, Uklonite tekst sa Remove ", "Vježba2",WS_CHILD | WS_VISIBLE );
+		MessageBox(*this, "Unesite tekst sa Add, Uklonite tekst sa Remove ", "Vježba2",MB_APPLMODAL );
 		break;
 	case IDC_ADD:
 		char  word[32];
