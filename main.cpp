@@ -51,8 +51,17 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 
 	Button button_remove;
 	button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 150, 100, 100, 30);
-
+	
 	// TODO: disable "Remove" button
+	HWND disable_button;
+		disable_button=GetDlgItem(*this, IDC_REMOVE);
+		int num;
+		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+		if (num == 0) {
+			EnableWindow(disable_button, false);
+		}
+
+	
 	return 0;
 }
 
@@ -71,19 +80,21 @@ void MainWindow::OnCommand(int id) {
 		// TODO: add string to listbox control
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(word));
 		// TODO: enable "Remove" button
+		HWND remove_button;
+		remove_button = GetDlgItem(*this, IDC_REMOVE);
+		int num;
+		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+		if (num) {
+			EnableWindow(remove_button, true);
+		}
 		break;
 	case IDC_REMOVE:
 		// TODO: get listbox selection
-		
+		// TODO: disable "Remove" button if listbox is empty
 		int id;
 		id = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-		
-		// TODO: if there is a selection, delete selected string
-		if (id != 0)
+		if (id >=0)
 			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, WPARAM(id), NULL);
-	
-		// TODO: disable "Remove" button if listbox is empty
-
 		break;
 	}
 }
