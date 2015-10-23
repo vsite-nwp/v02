@@ -80,12 +80,13 @@ void MainWindow::OnCommand(int id) {
 		// TODO: add string to listbox control
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(word));
 		// TODO: enable "Remove" button
-		HWND remove_button;
-		remove_button = GetDlgItem(*this, IDC_REMOVE);
+		
+		HWND enable_button;
+		enable_button = GetDlgItem(*this, IDC_REMOVE);
 		int num;
 		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 		if (num) {
-			EnableWindow(remove_button, true);
+			EnableWindow(enable_button, true);
 		}
 		break;
 	case IDC_REMOVE:
