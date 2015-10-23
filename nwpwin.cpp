@@ -45,6 +45,7 @@ bool Window::Create(HWND parent, DWORD style, PCSTR caption, int IdOrMenu,
 	if(cn.empty())
 		Register(cn = GenerateClassName());
 	hw = ::CreateWindow(cn.c_str(), caption, style, x, y, width, height, parent, (HMENU)IdOrMenu, 0, this);
+
 	return hw != 0;
 }
 

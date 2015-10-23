@@ -1,6 +1,7 @@
 #include "nwpwin.h"
 #include "res.h"
 #include<windows.h>
+#include<iostream>
 
 
 
@@ -64,9 +65,11 @@ void MainWindow::OnCommand(int id){
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
+			char  word[32];
 			// TODO: get text from edit control
-			GetDlgItemText(hw, IDC_LB, " asdsda",10);
+			GetDlgItemText(*this, IDC_EDIT, word,32);
 			// TODO: add string to listbox control
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING,NULL,LPARAM(word));
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
