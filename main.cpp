@@ -3,12 +3,6 @@
 #include<windows.h>
 #include<iostream>
 
-
-
-
-
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
 class Edit :public Window {
 public:
 	std::string ClassName() { return "EDIT"; }
@@ -23,7 +17,7 @@ class ListBox :public Window {
 public:
 	std::string ClassName() { return "LISTBOX"; }
 
-};
+}; // 
 
 
 
@@ -37,9 +31,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-
-
 	Edit edit;
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, " ", IDC_EDIT, 150, 0, 100, 30);
 
@@ -52,12 +43,8 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button button_remove;
 	button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 150, 100, 100, 30);
 	
-	// TODO: disable "Remove" button
-	
 	EnableWindow(button_remove, false); //deaktiviraj remove gumb prilikom pokretanja programa
 		
-
-	
 	return 0;
 }
 
@@ -65,46 +52,41 @@ void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_FILE_EXIT:
 		
-		// TODO: close main window
 		PostQuitMessage(0);
 		break;
+	
 	case ID_HELP_ABOUT:
-		// TODO: show dialog with text
+		
 		MessageBox(*this, "Unesite tekst sa Add, Uklonite tekst sa Remove ", "Vježba2",MB_APPLMODAL );
 		break;
+	
 	case IDC_ADD:
+		
 		char  word[32];
-		// TODO: get text from edit control
 		GetDlgItemText(*this, IDC_EDIT, word, 32);  //pokupi string iz edita u word
-		// TODO: add string to listbox control
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(word)); //pošalji string u listbox
-		// TODO: enable "Remove" button
 		
 		HWND enable_button;
 		enable_button = GetDlgItem(*this, IDC_REMOVE);
 		int num;
-		num = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+		num=SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 		if (num) {
 			EnableWindow(enable_button, true); //ako je word dodan aktiviraj gumb "Remove"
 		}
 		break;
 	case IDC_REMOVE:
 		
-		// TODO: disable "Remove" button if listbox is empty
-		
 		HWND disable_button;
 		disable_button = GetDlgItem(*this, IDC_REMOVE);
-		int num1;
-		num1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+		int num1=SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 		if (num1 == 0) {
 			EnableWindow(disable_button, false);  //ako je listbox prazan, deaktiviraj gumb "Remove"
 		}
-		// TODO: get listbox selection
-		int id;
-		id = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-		if (id >=0)
+		int id = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+		if (id >= 0) {
 			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, WPARAM(id), NULL); //briši odabrani string iz listboxa
-		break;
+		}
+			break;
 	}
 }
 
