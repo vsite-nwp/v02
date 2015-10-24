@@ -9,6 +9,7 @@ public:
 
 class Window
 {
+	public:
 	HWND hw;
 
 protected:
