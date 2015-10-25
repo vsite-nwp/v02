@@ -6,7 +6,6 @@
 class Edit : public Window{
 public:
 	std::string ClassName() { return "Edit"; }
-
 };
 
 class Button : public Window{
@@ -34,16 +33,16 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
-	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 180, 150);
+	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER , "", IDC_LB, 10, 10, 180, 150);
 	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 202, 10, 150, 40);
-	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 202, 60, 150, 40);
+	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER ,"Add", IDC_ADD, 202, 60, 150, 40);
 	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 202, 110, 150, 40);
 
 	// TODO: disable "Remove" button
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 
 	//disable "Add" button until something is written in edit 
-	//EnableWindow(GetDlgItem(*this, IDC_ADD), false);
+	EnableWindow(GetDlgItem(*this, IDC_ADD), false);
 
 
 	return 0;
@@ -64,24 +63,24 @@ void MainWindow::OnCommand(int id){
 
 		break;
 	
-	/*
 	case IDC_EDIT:
-	{
-	int num = SendDlgItemMessage(*this, IDC_EDIT, LB_GETTEXTLEN, 0, 0);
 
-	// TODO: disable "ADD" button if edit is empty
-	if (num > 0)
-		EnableWindow(GetDlgItem(*this, IDC_ADD), true);
-	else if (num == 0)
-		EnableWindow(GetDlgItem(*this, IDC_ADD), false);
-	}
-	*/
+		char buf[1024];
+		GetDlgItemText(*this, IDC_EDIT, buf, sizeof buf);
+
+		EnableWindow(GetDlgItem(*this, IDC_ADD), strlen(buf) > 1);
+
+		break;
 	case IDC_ADD:
+
 		// TODO: get text from edit control
 		char buff[1024];
 		GetDlgItemText(*this, IDC_EDIT, buff, sizeof buff);
 
 		// TODO: add string to listbox control
+		if (strlen(buff) < 1)
+			break;
+
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buff);
 		SetWindowText(GetDlgItem(*this, IDC_EDIT), "");
 
@@ -128,7 +127,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
 	HICON his = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(his));
-
+	
 	Application app; 
 	return app.Run();
 }
