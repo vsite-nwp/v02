@@ -45,6 +45,7 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
+			PostMessage(*this,WM_CLOSE,0,0);
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
