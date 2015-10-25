@@ -68,7 +68,7 @@ void MainWindow::OnCommand(int id){
 		char buf[1024];
 		GetDlgItemText(*this, IDC_EDIT, buf, sizeof buf);
 
-		EnableWindow(GetDlgItem(*this, IDC_ADD), strlen(buf) > 1);
+		EnableWindow(GetDlgItem(*this, IDC_ADD), strlen(buf) > 0);
 
 		break;
 	case IDC_ADD:
