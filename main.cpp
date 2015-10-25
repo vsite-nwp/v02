@@ -53,6 +53,8 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			char c[100];
+			GetDlgItemText(*this,IDC_EDIT,c,sizeof c);
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
 			break;
