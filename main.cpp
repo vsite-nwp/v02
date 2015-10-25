@@ -49,6 +49,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
+			MessageBox(*this,"Vjezba_2","NWP",MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
