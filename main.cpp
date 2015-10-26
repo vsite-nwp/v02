@@ -62,15 +62,22 @@ void MainWindow::OnCommand(int id){
 			// TODO: add string to listbox control
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)s);
 			// TODO: enable "Remove" button
-			EnableWindow(button_remove, TRUE);
+			int cnt1;
+			cnt1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if (cnt1)
+				EnableWindow(button_remove, TRUE);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
-			SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			int cnt2;
+			cnt2 = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 			// TODO: if there is a selection, delete selected string
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)s, NULL);
+			if (cnt2 >= 0)
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)cnt2, NULL);
 			// TODO: disable "Remove" button if listbox is empty
-			EnableWindow(button_remove, FALSE);
+			int cnt3 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if (cnt3 == 0)
+				EnableWindow(button_remove, FALSE);
 			break;
 	}
 }
