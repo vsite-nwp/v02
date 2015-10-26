@@ -16,7 +16,7 @@ public:
 class ListBox:public Window{
 public:
 	std::string ClassName()
-	{return "ListBox2";}
+	{return "ListBox";}
 };
 
 
@@ -34,8 +34,8 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	Edit edit; edit.Create(* this,WS_CHILD | WS_VISIBLE | WS_BORDER,"",IDC_EDIT,120,10,100,24 );
 	Button button_add; button_add.Create(* this,WS_CHILD | WS_VISIBLE,"add",IDC_EDIT,120,40,100,24);
-	Button button_remove; button_remove.Create(* this,WS_CHILD | WS_VISIBLE,"remove",IDC_EDIT,120,40,100,24);
-	ListBox listbox; listbox.Create(* this,WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,"listbox",IDC_EDIT,120,40,100,24);
+	Button button_remove; button_remove.Create(* this,WS_CHILD | WS_VISIBLE,"remove",IDC_EDIT,120,70,100,24);
+	ListBox listbox; listbox.Create(* this,WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,"listbox",IDC_LB,10,10,100,100);
 	EnableWindow(GetDlgItem(*this,IDC_REMOVE),false);
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
@@ -63,7 +63,8 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_REMOVE:
 			int ind=SendDlgItemMessage(*this,IDC_LB,LB_GETCURSEL,0,0);
-			// TODO: get listbox selectionSendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, ind, 0);
+			// TODO: get listbox selection
+			    SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, ind, 0);
 				int cnt = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), cnt > 0);
 				if(ind == cnt) --ind;
