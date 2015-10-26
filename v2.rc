@@ -2,6 +2,15 @@
 
 IDI_V2 ICON "v2.ico"
 
+STRINGTABLE
+BEGIN
+	IDS_Add "Add"
+	IDS_Remove "Remove"
+	IDS_AboutTitle "About"
+	IDS_AboutText "By NG \nVjezba 02"
+END
+
+
 IDM_V2 MENU
 BEGIN
     POPUP "&File"

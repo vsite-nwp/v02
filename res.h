@@ -8,3 +8,8 @@
 #define IDM_V2			400
 #define ID_FILE_EXIT	401
 #define ID_HELP_ABOUT	402
+
+#define IDS_Add 501
+#define IDS_Remove 502
+#define IDS_AboutTitle 503
+#define IDS_AboutText 504

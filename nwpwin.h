@@ -31,3 +31,24 @@ protected:
 	virtual void OnCommand(int)  { }
 	virtual void OnDestroy()  { }
 };
+
+
+class Edit : public Window
+{
+public:
+	std::string ClassName(){ return "EDIT"; }
+};
+
+class Button : public Window
+{
+public:
+	std::string ClassName(){ return "BUTTON"; }
+};
+
+class ListBox : public Window
+{
+public:
+	std::string ClassName(){ return "LISTBOX"; }
+};
+
+
