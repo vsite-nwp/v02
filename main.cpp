@@ -36,8 +36,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove",IDC_REMOVE, 250, 225, 100, 50);
 	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 100, 25, 100, 200);
 	// TODO: disable "Remove" button
-
-
+	EnableWindow(button_remove, FALSE);
 	return 0;
 }
 
@@ -49,7 +48,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
-			MessageBox(*this, "Upisi tekst u edit i klikni Add za dodavanje u listbox. Remove mice tekst iz listboxa.", "NWP", MB_OK);
+			MessageBox(*this, "Upiši tekst u edit i klikni Add za dodavanje u listbox. Remove mièe tekst iz listboxa.", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
