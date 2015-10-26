@@ -55,7 +55,7 @@ void MainWindow::OnCommand(int id){
 		case IDC_ADD:
 			// TODO: get text from edit control
 			char c[128];
-			GetDlgItemText(*this,IDC_ADD,c,sizeof c);
+			GetDlgItemText(*this,IDC_EDIT,c,sizeof c);
 			// TODO: add string to listbox control
 			SendDlgItemMessage(*this,IDC_LB,LB_ADDSTRING,0,(LPARAM)c);
 			// TODO: enable "Remove" button
@@ -68,7 +68,7 @@ void MainWindow::OnCommand(int id){
 				int cnt = SendDlgItemMessage(*this, IDC_REMOVE	, LB_GETCOUNT, 0, 0);
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), cnt > 0);
 				if(ind == cnt) --ind;
-				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, ind, 0);
+				SendDlgItemMessage(*this, IDC_REMOVE, LB_SETCURSEL, ind, 0);
 
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
