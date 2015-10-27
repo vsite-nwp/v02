@@ -1,6 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
-
+//prva promjena
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
 class Edit:public Window{
 public:
