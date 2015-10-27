@@ -16,7 +16,7 @@ public:
 class ListBox : public Window{
 	std::string ClassName() { return "LISTBOX"; }
 
-	//kom
+	
 
 };
 class MainWindow : public Window
@@ -61,8 +61,15 @@ void MainWindow::OnCommand(int id){
 		position = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 		if (position>=0){
 			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, position, 0);
-			EnableWindow(GetDlgItem(*this, IDC_REMOVE), position>0);
+			int listboxnum = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), listboxnum>0);
+				if (position == listboxnum){
+					position--;
 
+				}
+			
+					
+						SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, position, 0);
 		}
 		break;
 	}
