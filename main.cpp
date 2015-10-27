@@ -64,11 +64,12 @@ void MainWindow::OnCommand(int id){
 		case IDC_REMOVE:
 			int ind=SendDlgItemMessage(*this,IDC_REMOVE,LB_GETCURSEL,0,0);
 			// TODO: get listbox selection
+			if(ind>=0)
 			    SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, ind, 0);
-				int cnt = SendDlgItemMessage(*this, IDC_REMOVE	, LB_GETCOUNT, 0, 0);
+				int cnt = SendDlgItemMessage(*this, IDC_LB	, LB_GETCOUNT, 0, 0);
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), cnt > 0);
 				if(ind == cnt) --ind;
-				SendDlgItemMessage(*this, IDC_REMOVE, LB_SETCURSEL, ind, 0);
+				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, ind, 0);
 
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
