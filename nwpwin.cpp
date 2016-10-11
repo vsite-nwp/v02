@@ -68,6 +68,7 @@ LRESULT CALLBACK Window::Proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 	{
 		case WM_COMMAND: pThis->OnCommand(LOWORD(wParam)); return 0;
 		case WM_DESTROY: pThis->OnDestroy(); return 0;
+		case WM_HELP: MessageBox(hwnd, "Genato", "About", MB_ICONINFORMATION | MB_HELP); return 0;
 	}
 	return ::DefWindowProc(hwnd, message, wParam, lParam);
 }
