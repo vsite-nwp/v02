@@ -1,8 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
 class Button : public Window {
 public:
 	std::string ClassName() { return "BUTTON"; }
@@ -25,8 +23,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
 	Button bt1, bt2;
 	Edit ed;
 	ListBox lb;	
@@ -41,6 +37,7 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
