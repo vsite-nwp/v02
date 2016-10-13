@@ -27,6 +27,13 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
+	Button bt1, bt2;
+	Edit ed;
+	ListBox lb;	
+	ed.Create(*this, WS_CHILD | WS_VISIBLE |WS_BORDER,"", IDC_EDIT, 210, 10, 150, 35);
+	bt1.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 210, 80, 150, 35);
+	bt2.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 210, 130, 150, 35);
+	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 180, 200);
 	return 0;
 }
 
@@ -59,7 +66,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu, CW_USEDEFAULT,CW_USEDEFAULT, 400,280);	
 	// set icons
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
