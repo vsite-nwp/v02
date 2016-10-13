@@ -1,9 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
-
 class MainWindow : public Window
 {
 protected:
@@ -11,31 +8,61 @@ protected:
 	void OnCommand(int id);
 	void OnDestroy();
 };
+class Edit :public Window {
+	public:
+	std::string ClassName(){
+	return "Edit"; }
+		
+};
+
+class Button :public Window {
+	public:
+	std::string ClassName(){
+	return "Button"; }
+};
+class ListBox :public Window {
+public:
+	std::string ClassName() {
+		return "ListBox";
+	}
+};
+
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
-{
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+{	
+	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 120, 10, 100, 24);
+	Button button_add; button_add.Create(*this, WS_CHILD | WS_VISIBLE, "add", IDC_ADD, 120, 40, 100, 24);
+	Button button_remove; button_remove.Create(*this, WS_CHILD | WS_VISIBLE, "remove", IDC_REMOVE, 120, 70, 100, 24);
+	ListBox listbox; listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "listbox", IDC_LB, 10, 10, 100, 120);
+	EnableWindow(button_remove, false);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "some text", "About", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char msg[50];
+			GetDlgItemText(*this, IDC_EDIT, msg, 50);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)msg);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int listBoxSelected = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			if (listBoxSelected == LB_ERR){
+				MessageBox(*this, "You didn`t select item from ListBox", "No Selected Item", MB_ICONINFORMATION);
+				break;
+				}
+			else
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, listBoxSelected, NULL);
+
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
