@@ -39,13 +39,14 @@ void MainWindow::OnCommand(int id){
 			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
 			MessageBox(NULL, "Nothing here, go back","Pop-Up!", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char msg[50];
+			GetDlgItemText(*this, IDC_EDIT, msg, 50);		
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)msg);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
