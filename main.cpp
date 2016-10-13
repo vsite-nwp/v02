@@ -3,6 +3,17 @@
 
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
 // TODO: derive from Window, override ClassName
+class Button : public Window {
+public:
+	std::string ClassName() { return "BUTTON"; }
+};
+class Edit : public Window {
+	std::string ClassName() { return "EDIT"; }
+};
+class ListBox : public Window {
+	std::string ClassName() { return "ListBox"; }
+};
+
 
 class MainWindow : public Window
 {
