@@ -18,6 +18,10 @@ public:
 
 class MainWindow : public Window
 {
+public:
+	Button button_add, button_remove;
+	Edit edit;
+	ListBox list_box;
 protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
@@ -26,9 +30,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	Button button_add, button_remove;
-	Edit edit;
-	ListBox list_box;
 	edit.Create(*this, WS_CHILD | WS_VISIBLE, "edit", IDC_EDIT, 125, 10, 100, 25);
 	button_add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 125, 45, 100, 25);
 	button_remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 125, 85, 100, 25);
@@ -41,15 +42,22 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Upisite tekst u edit polje, zatim kliknite na Add button za dodavanje u listbox. Remove button mice selektirani tekst iz listbox-a.", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			char text[250];
+			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
 			// TODO: add string to listbox control
+			SendDlgItemMessage(*this, IDC_LB,LB_ADDSTRING, NULL,LPARAM(text));
 			// TODO: enable "Remove" button
+			int count;
+			count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if(count) 
+				EnableWindow(button_remove, true);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
