@@ -35,7 +35,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	button_remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 125, 85, 100, 25);
 	list_box.Create(*this, WS_CHILD | WS_VISIBLE, "ListBox", IDC_LB, 10, 10, 100, 100);
 	
-	EnableWindow(button_remove, false);
+	EnableWindow(button_remove, FALSE);
 	return 0;
 }
 
@@ -48,21 +48,24 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Upisite tekst u edit polje, zatim kliknite na Add button za dodavanje u listbox. Remove button mice selektirani tekst iz listbox-a.", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
 			char text[250];
 			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
-			// TODO: add string to listbox control
+			
 			SendDlgItemMessage(*this, IDC_LB,LB_ADDSTRING, NULL,LPARAM(text));
-			// TODO: enable "Remove" button
+			
 			int count;
 			count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 			if(count) 
 				EnableWindow(button_remove, true);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			
+			int count_1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			
+			if (count_1 >= 0) SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)count, NULL);
+			
+			count_1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if (count_1 == 0) EnableWindow(button_remove, FALSE);
 			break;
 	}
 }
