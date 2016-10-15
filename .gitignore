@@ -1,2 +1,7 @@
 Debug/
 Release/
+
+*.suo
+*.sln
+*.opendb
+*.db
