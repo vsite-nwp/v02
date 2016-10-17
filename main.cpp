@@ -14,7 +14,6 @@ class ListBox : public Window {
 public:
 	std::string ClassName() { return "LISTBOX"; }
 };
-// TODO: derive from Window, override ClassName
 
 class MainWindow : public Window
 {
@@ -42,7 +41,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			OnDestroy();
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "Upisite tekst u edit polje, zatim kliknite na Add button za dodavanje u listbox. Remove button mice selektirani tekst iz listbox-a.", "NWP 2", MB_OK);
@@ -53,16 +52,14 @@ void MainWindow::OnCommand(int id){
 			
 			SendDlgItemMessage(*this, IDC_LB,LB_ADDSTRING, NULL,LPARAM(text));
 			
-			int count;
-			count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
-			if(count) 
-				EnableWindow(button_remove, true);
+			EnableWindow(button_remove, true);
+			
 			break;
 		case IDC_REMOVE:
 			
 			int count_1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 			
-			if (count_1 >= 0) SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)count, NULL);
+			if (count_1 >= 0) SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)count_1, NULL);
 			
 			count_1 = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
 			if (count_1 == 0) EnableWindow(button_remove, FALSE);
