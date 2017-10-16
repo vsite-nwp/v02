@@ -1,8 +1,20 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Edit : public Window {
+public:
+	std::string ClassName() { return "EDIT"; };
+};
+
+class Button : public Window {
+public:
+	std::string ClassName() { return "BUTTON"; };
+};
+
+class ListBox : public Window {
+public:
+	std::string ClassName() { return "LISTBOX"; };
+};
 
 class MainWindow : public Window
 {
@@ -14,28 +26,39 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Edit edit;
+	edit.Create(*this, WS_CHILD | WS_VISIBLE,NULL, IDC_EDIT,110,20,70,20);
+
+	Button bAdd, bRm;
+	bAdd.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_EDIT, 110, 50, 70, 20);
+	bRm.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "REMOVE", IDC_EDIT, 110, 80, 70, 20);
+
+	ListBox Lbox;
+	Lbox.Create(*this, WS_CHILD | WS_VISIBLE, "ListBox", IDC_EDIT, 10, 10, 100, 100);
+
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
+
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
+			
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
+
 			break;
 	}
 }
