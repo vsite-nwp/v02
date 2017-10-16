@@ -4,6 +4,22 @@
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
 // TODO: derive from Window, override ClassName
 
+class Edit : public Window {
+protected:
+	std::string ClassName()override { return "EDIT"; }
+};
+
+class Button : public Window {
+protected:
+	std::string ClassName()override { return "BUTTON"; }
+	
+};
+
+class ListBox : public Window {
+protected:
+	std::string ClassName()override { return "LISTBOX"; }
+};
+
 class MainWindow : public Window
 {
 protected:
@@ -14,8 +30,17 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Button add, remove;
+	add.Create(*this, WS_CHILD|WS_VISIBLE, "Add", IDC_ADD, 200, 100, 60, 30);
+	remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_ADD, 200, 150, 60, 30);
+	EnableWindow(remove, false);
+
+	ListBox lBox;
+	lBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_ADD, 50, 50, 100, 200);
+
+	Edit ebox;
+	ebox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_ADD, 200, 60, 80, 40);
+
 	return 0;
 }
 
