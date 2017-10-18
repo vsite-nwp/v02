@@ -18,6 +18,7 @@ public:
 
 class MainWindow : public Window
 {
+
 protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
@@ -27,14 +28,14 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	Edit edit;
-	edit.Create(*this, WS_CHILD | WS_VISIBLE,NULL, IDC_EDIT,110,20,70,20);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,NULL, IDC_EDIT,110,20,70,20);
 
 	Button bAdd, bRm;
-	bAdd.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_EDIT, 110, 50, 70, 20);
-	bRm.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "REMOVE", IDC_EDIT, 110, 80, 70, 20);
+	bAdd.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 110, 50, 70, 20);
+	bRm.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "REMOVE", IDC_REMOVE, 110, 80, 70, 20);
 
 	ListBox Lbox;
-	Lbox.Create(*this, WS_CHILD | WS_VISIBLE, "ListBox", IDC_EDIT, 10, 10, 100, 100);
+	Lbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "ListBox", IDC_LB, 10, 10, 100, 100);
 
 	return 0;
 }
@@ -45,19 +46,31 @@ void MainWindow::OnCommand(int id){
 			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Samethink", "About", MB_OK | MB_ICONINFORMATION);
 
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+
+			char Buffer[64];
+			GetDlgItemText(*this, IDC_EDIT, Buffer,64);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING,0, (LPARAM)Buffer);
 			
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL)) {
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE) , true);
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+
+			int GdjeSeNalazi=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)Buffer);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, GdjeSeNalazi, (LPARAM)Buffer);
+			
+			
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0) {
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
+			
+
+
 
 			break;
 	}
