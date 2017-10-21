@@ -1,8 +1,7 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+
 class Button :public Window {
 public:
 	std::string ClassName() override {
@@ -40,20 +39,35 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			
+			MessageBox(NULL, "helping...", "Help", MB_YESNOCANCEL);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			
+			char szItemName[80];
+			GetDlgItemText(*this, IDC_EDIT,szItemName,sizeof(szItemName));
+			
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)szItemName);
+			
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			
+			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL,NULL);
+			if (itemIndex == LB_ERR)
+			{
+				//No selection
+				break;
+			}
+			else
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL);
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			
 			break;
 	}
 }
