@@ -31,7 +31,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Edit edd; Listbox list;
 	edd.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200,10,100,30);
 	b_ADD.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 45, 100, 30);
-	b_rem.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 80, 100, 30);
+	b_rem.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 200, 80, 100, 30);
 	list.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 180, 140);
 	return 0;
 }
@@ -40,11 +40,11 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			
-			DestroyWindow(*this);
+			CloseWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			
-			MessageBox(NULL, "helping...", "Help", MB_YESNOCANCEL);
+			MessageBox(*this, "helping...", "Help", MB_OK);
 			break;
 		case IDC_ADD:
 			
@@ -65,7 +65,7 @@ void MainWindow::OnCommand(int id){
 			}
 			else
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL);
-			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL))
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL)==0)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			
 			break;
