@@ -41,7 +41,7 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL)) {
-				int yesno = MessageBoxA(*this, "Are you sure? All data will be lost.", "Remove", MB_YESNO | MB_ICONWARNING);
+				int yesno = MessageBoxA(*this, "Are you sure? All data will be lost.", "Exit", MB_YESNO | MB_ICONWARNING);
 				if (yesno == IDYES) {
 					PostQuitMessage(0);
 				}
@@ -51,7 +51,7 @@ void MainWindow::OnCommand(int id){
 			}
 			break;
 		case ID_HELP_ABOUT:
-			MessageBoxA(*this, "Druga vjeûba.", "About", MB_OK | MB_ICONINFORMATION);
+			MessageBoxA(*this, "Druga vje≈æba.", "About", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
 			char text[100];
