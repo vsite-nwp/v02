@@ -48,9 +48,13 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Ovo je druga vjezba iz NWP", "About...", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char text[50];
+			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)text);
+			int inList;
+			inList = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if (inList)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
