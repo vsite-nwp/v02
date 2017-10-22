@@ -45,7 +45,7 @@ void MainWindow::OnCommand(int id){
 			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Ovo je druga vjezba iz NWP", "About...", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
