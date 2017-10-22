@@ -1,9 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
-
 class Edit : public Window {
 protected:
 	std::string ClassName()override { return "EDIT"; }
@@ -31,41 +28,45 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	Button add, remove;
-	add.Create(*this, WS_CHILD|WS_VISIBLE, "Add", IDC_ADD, 200, 100, 60, 30);
-	remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_ADD, 200, 150, 60, 30);
+	add.Create(*this, WS_CHILD|WS_VISIBLE, "Add", IDC_ADD, 200, 90, 80, 25);
+	remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 125, 80, 25);
 	EnableWindow(remove, false);
 
 	ListBox lBox;
-	lBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_ADD, 50, 50, 100, 200);
+	lBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 70, 60, 100, 150);
 
 	Edit ebox;
-	ebox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_ADD, 200, 60, 80, 40);
+	ebox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 60, 80, 20);
 
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
-	switch(id){
-		case ID_FILE_EXIT:
-			// TODO: close main window
-			break;
-		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
-			break;
-		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
-			break;
-		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
-			break;
+	switch (id) {
+	case ID_FILE_EXIT:
+		if (MessageBox(HWND(), "Are you sure you want to leave", "Exit", IDOK) == IDOK)
+			OnDestroy();
+		break;
+	case ID_HELP_ABOUT:
+		MessageBox(HWND(), "Use Add to add string to list.\nSelect element from the list and press Remove to remove it from list.", "Help", IDOK);
+		break;
+	case IDC_ADD: {
+		LPTSTR inpEBox = new TCHAR[50];
+		GetDlgItemText(HWND(), IDC_EDIT, inpEBox, 50);
+		SendDlgItemMessage(HWND(), IDC_LB, LB_ADDSTRING, 0, (LPARAM)inpEBox);
+		delete[] inpEBox;
+		break;
+	}
+	case IDC_REMOVE:
+		// TODO: get listbox selection
+		// TODO: if there is a selection, delete selected string
+		// TODO: disable "Remove" button if listbox is empty
+		break;
 	}
 }
 
 void MainWindow::OnDestroy(){
+	DestroyWindow(HWND());
 	::PostQuitMessage(0);
 }
 
