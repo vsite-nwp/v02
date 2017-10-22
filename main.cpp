@@ -40,7 +40,7 @@ void MainWindow::OnCommand(int id){
 			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, "Autor: \n Bruno Brckovic", "Help", MB_OK | MB_ICONINFORMATION);
+			MessageBox(NULL, "Pomoæ?: \n Nema je bas...", "Help", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
 			char getString[40];
@@ -56,7 +56,7 @@ void MainWindow::OnCommand(int id){
 			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 			if (itemIndex == LB_ERR)
 			{
-				//No selection
+				MessageBox(NULL, "Please select item from the list!", "Hm...", MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 			else
@@ -66,8 +66,13 @@ void MainWindow::OnCommand(int id){
 			//if (cnt == 0)
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-			//else
-				//int index = SendMessage(ListBox, LB_GETCURSEL, 0, 0);
+			else
+			{
+				if (itemIndex == 0)
+					SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, itemIndex, NULL);
+				else
+					SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, itemIndex - 1, NULL);
+			}
 			break;
 	}
 }
