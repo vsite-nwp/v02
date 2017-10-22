@@ -51,15 +51,16 @@ void MainWindow::OnCommand(int id){
 			char text[50];
 			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)text);
-			int inList;
-			inList = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
-			if (inList)
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int choice = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			if(choice != LB_ERR)
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)choice, NULL);
+
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL)) 
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
