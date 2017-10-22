@@ -42,7 +42,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
