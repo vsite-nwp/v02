@@ -45,22 +45,23 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	int buffsize = 1024;
 	LPSTR text = new TCHAR[buffsize];
-	LPSTR msg = "Information about NPW2.";
+	LPSTR about = "Information about NPW2.";
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
-			OnDestroy();
-			PostQuitMessage(0);
+			DestroyWindow(*this);
+			PostQuitMessage(1);
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
-			MessageBox(*this, msg, "About", WS_CAPTION | WS_POPUP);
+			//DialogBox(hInst, MAKEINTRESOURCE(ID_HELP_ABOUT), *this, about);
+			MessageBox(*this, about, "About", WS_CAPTION | WS_POPUP);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control			
 			GetDlgItemText(*this, IDC_EDIT, text, buffsize);
 			// TODO: add string to listbox control
-			SendDlgItemMessage (*this, IDC_LB, LB_ADDSTRING, 0, 0);
+			SendDlgItemMessage (*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 			// TODO: enable "Remove" button
 			EnableWindow(*this, true);		
 			break;
