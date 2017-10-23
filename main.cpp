@@ -43,7 +43,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			OnDestroy();
+			CloseWindow(HWND(this));
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "Samethink", "About", MB_OK | MB_ICONINFORMATION);
@@ -54,18 +54,15 @@ void MainWindow::OnCommand(int id){
 			char Buffer[64];
 			GetDlgItemText(*this, IDC_EDIT, Buffer,64);
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING,0, (LPARAM)Buffer);
-			
-			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL)) {
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE) , true);
-			}
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE) , true);
 			break;
 		case IDC_REMOVE:
-
-			int GdjeSeNalazi=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)Buffer);
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, GdjeSeNalazi, (LPARAM)Buffer);
+			int count;
+			int index=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, NULL);
+			if(index>=0)int count=SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
 			
 			
-			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0) {
+			if (count==0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
 			
