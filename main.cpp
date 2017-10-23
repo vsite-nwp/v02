@@ -52,7 +52,6 @@ void MainWindow::OnCommand(int id){
 	
 			break;
 		case IDC_REMOVE:
-			//int cnt;
 			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 			if (itemIndex == LB_ERR)
 			{
@@ -62,8 +61,6 @@ void MainWindow::OnCommand(int id){
 			else
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL);
 
-			//cnt = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
-			//if (cnt == 0)
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			else
