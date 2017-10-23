@@ -59,9 +59,11 @@ void MainWindow::OnCommand(int id){
 		case IDC_REMOVE:
 			int count;
 			int index=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, NULL);
-			if(index>=0) count=SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
-			if (count==0) {
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			if (index != LB_ERR) {
+				count = SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
+				if (count == 0) {
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+				}
 			}
 			break;
 	}
