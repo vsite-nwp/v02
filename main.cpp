@@ -43,7 +43,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			CloseWindow(HWND(this));
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "Samethink", "About", MB_OK | MB_ICONINFORMATION);
@@ -59,16 +59,10 @@ void MainWindow::OnCommand(int id){
 		case IDC_REMOVE:
 			int count;
 			int index=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, NULL);
-			if(index>=0)int count=SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
-			
-			
+			if(index>=0) count=SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
 			if (count==0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
-			
-
-
-
 			break;
 	}
 }
