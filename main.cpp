@@ -62,12 +62,8 @@ void MainWindow::OnCommand(int id){
 					break;
 				}
 			else
-				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL);
-			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL))
-			{
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-			}
-
+				if(!SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
