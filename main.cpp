@@ -30,9 +30,9 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	ListBox lb; lb.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_ADD, 10, 10, 180, 140);
+	ListBox lb; lb.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_LB, 10, 10, 180, 140);
 	Button b; b.Create(*this, WS_CHILD | WS_VISIBLE, "add", IDC_ADD, 200, 45, 100, 30);
-	Button d; d.Create(*this, WS_CHILD | WS_VISIBLE, "Delete", IDC_ADD, 200, 80, 100, 30);
+	Button d; d.Create(*this, WS_CHILD | WS_VISIBLE, "Delete", IDC_REMOVE, 200, 80, 100, 30);
 	Edit e; e.Create(*this,WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 200, 10, 100, 30);
 	EnableWindow(d, false);
 	return 0;
@@ -46,7 +46,7 @@ void MainWindow::OnCommand(int id){
 			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, "something", "Help", MB_YESNOCANCEL);
+			MessageBox(NULL, "help yourself", "Help", MB_YESNOCANCEL);
 			break;
 		case IDC_ADD:
 			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer)-1);
