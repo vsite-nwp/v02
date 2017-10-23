@@ -42,23 +42,23 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
+	TCHAR inpEBox[51];
+
 	switch (id) {
 	case ID_FILE_EXIT:
-		if (MessageBox(HWND(), "Are you sure you want to leave", "Exit", IDOK) == IDOK)
+		if (MessageBox(*this, "Are you sure you want to leave", "Exit", IDOK) == IDOK)
 			OnDestroy();
 		break;
 	case ID_HELP_ABOUT:
-		MessageBox(HWND(), "Use Add to add string to list.\nSelect element from the list and press Remove to remove it from list.", "Help", IDOK);
+		MessageBox(*this, "Use Add to add string to list.\nSelect element from the list and press Remove to remove it from list.", "Help", IDOK);
 		break;
-	case IDC_ADD: {
-		LPTSTR inpEBox = new TCHAR[50];
-		GetDlgItemText(HWND(), IDC_EDIT, inpEBox, 50);
-		SendDlgItemMessage(HWND(), IDC_LB, LB_ADDSTRING, 0, (LPARAM)inpEBox);
-		delete[] inpEBox;
+	case IDC_ADD: 
+		GetDlgItemText(*this, IDC_EDIT, inpEBox, sizeof(inpEBox)-1);
+		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)inpEBox);
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 		break;
-	}
 	case IDC_REMOVE:
-		// TODO: get listbox selection
+		int lbSel = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 		// TODO: if there is a selection, delete selected string
 		// TODO: disable "Remove" button if listbox is empty
 		break;
@@ -66,7 +66,7 @@ void MainWindow::OnCommand(int id){
 }
 
 void MainWindow::OnDestroy(){
-	DestroyWindow(HWND());
+	DestroyWindow(*this);
 	::PostQuitMessage(0);
 }
 
