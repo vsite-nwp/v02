@@ -30,15 +30,17 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	ListBox lb; lb.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_ADD, 200, 10, 100, 30);
+	ListBox lb; lb.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_ADD, 10, 10, 180, 140);
 	Button b; b.Create(*this, WS_CHILD | WS_VISIBLE, "add", IDC_ADD, 200, 45, 100, 30);
 	Button d; d.Create(*this, WS_CHILD | WS_VISIBLE, "Delete", IDC_ADD, 200, 80, 100, 30);
-	Edit e; e.Create(*this,WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 10, 10, 180, 140);
+	Edit e; e.Create(*this,WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 200, 10, 100, 30);
 	EnableWindow(d, false);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
+	TCHAR buffer[80];
+
 	switch(id){
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
@@ -47,11 +49,9 @@ void MainWindow::OnCommand(int id){
 			MessageBox(NULL, "something", "Help", MB_YESNOCANCEL);
 			break;
 		case IDC_ADD:
-			char buffer[80];
-
-			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer));
+			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer)-1);
 			
-			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)buffer);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
 			
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
