@@ -1,9 +1,23 @@
+
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+//////////////////////////////////////////////////////
+class Button : public Window {
+	public:
+		std::string ClassName() override { return "BUTTON"; }; 
+};
 
+class Edit : public Window {
+public:  
+	std::string ClassName() override { return "EDIT"; };
+};
+
+class ListBox : public Window {
+public:  
+	std::string ClassName() override { return "LISTBOX"; };
+};
+/////////////////////////////////////////////////////
 class MainWindow : public Window
 {
 protected:
@@ -11,39 +25,55 @@ protected:
 	void OnCommand(int id);
 	void OnDestroy();
 };
-
+////////////////////////////////////////////////////////
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Edit e1;
+	Button b1, b2;
+	ListBox lb;
+	
+	e1.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 300, 100, 100, 30);
+	b1.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 300, 140, 100, 30);
+	b2.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 300, 180, 100, 30);
+	lb.Create(*this, WS_CHILD | WS_VISIBLE |WS_BORDER, "",IDC_LB,100,100,100,100);
+	EnableWindow(b1,false);
 	return 0;
 }
-
+////////////////////////////////////////////////////////
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this,"Dialog in the box","Click ok",MB_OK|MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char msg[40];
+			GetDlgItemText(*this,IDC_EDIT,msg,40);
+			if (strlen(msg) != 0) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)msg);
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			if (index == -1) {
+				MessageBox(*this, "Select object to remove", "Alert", MB_OK | MB_ICONINFORMATION);
+			}
+			else{
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, NULL);
+				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
 			break;
 	}
 }
-
+//////////////////////////////////////////////////////////////////
 void MainWindow::OnDestroy(){
 	::PostQuitMessage(0);
 }
-
+///////////////////////////////////////////////////////////////
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
