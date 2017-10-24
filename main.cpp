@@ -50,9 +50,11 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
-			GetDlgItem(*this, IDC_EDIT);
+			
 			// TODO: add string to listbox control
+			
 			// TODO: enable "Remove" button
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
