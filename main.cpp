@@ -39,8 +39,6 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
-	TCHAR buffer[80];
-
 	switch(id){
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
@@ -49,21 +47,22 @@ void MainWindow::OnCommand(int id){
 			MessageBox(NULL, "help yourself", "Help", MB_YESNOCANCEL);
 			break;
 		case IDC_ADD:
-			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer)-1);
-			
+		{
+			TCHAR buffer[80];
+			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer) - 1);
+
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
-			
+
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
+		}
 		case IDC_REMOVE:
 			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-			if (itemIndex == LB_ERR)
+			if (itemIndex != LB_ERR)
 				{
-					break;
+					if (!SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL))
+						EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 				}
-			else
-				if(!SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL))
-					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
