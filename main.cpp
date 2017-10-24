@@ -61,7 +61,7 @@ void MainWindow::OnCommand(int id){
 			int index=SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, NULL);
 			if (index != LB_ERR) {
 				count = SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, NULL);
-				if (count == LB_ERR) {
+				if (count > 0) {
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 				}
 			}
