@@ -41,7 +41,8 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			PostQuitMessage(0);
+			CloseWindow(*this);
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(NULL, "help yourself", "Help", MB_YESNOCANCEL);
