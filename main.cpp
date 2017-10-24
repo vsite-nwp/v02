@@ -42,32 +42,32 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
-	TCHAR inpEBox[51];
-
+	
 	switch (id) {
 	case ID_FILE_EXIT:
 		if (MessageBox(*this, "Are you sure you want to leave", "Exit", IDOK) == IDOK)
-			OnDestroy();
+			DestroyWindow(*this);
 		break;
 	case ID_HELP_ABOUT:
 		MessageBox(*this, "Use Add to add string to list.\nSelect element from the list and press Remove to remove it from list.", "Help", IDOK);
 		break;
-	case IDC_ADD: 
-		GetDlgItemText(*this, IDC_EDIT, inpEBox, sizeof(inpEBox)-1);
+	case IDC_ADD: {
+		TCHAR inpEBox[51];
+
+		GetDlgItemText(*this, IDC_EDIT, inpEBox, sizeof(inpEBox) - 1);
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)inpEBox);
 		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 		break;
+	}
 	case IDC_REMOVE:
 		int lbSel = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-		if (lbSel >= 0)
-			if(SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)lbSel, 0)==0)
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+		if (lbSel >= 0 && !SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)lbSel, 0))
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 		break;
 	}
 }
 
 void MainWindow::OnDestroy(){
-	DestroyWindow(*this);
 	::PostQuitMessage(0);
 }
 
