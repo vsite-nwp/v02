@@ -59,10 +59,10 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
-			SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCURSEL, NULL, NULL);
+			int x = SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCURSEL, NULL, NULL);
 			// TODO: if there is a selection, delete selected string
 			if (LB_GETCURSEL != LB_ERR) {
-				SendMessage(GetDlgItem(*this, IDC_LB), LB_DELETESTRING, NULL, NULL);
+				SendMessage(GetDlgItem(*this, IDC_LB), LB_DELETESTRING, x , NULL);
 			}
 			// TODO: disable "Remove" button if listbox is empty
 			break;
