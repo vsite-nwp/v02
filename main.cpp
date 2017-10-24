@@ -39,32 +39,32 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
-	int buffsize = 256;
-	LPSTR text = new TCHAR[buffsize];
-	LPSTR about = "Information about NPW2.";
-	int i;
+	
+	
+
 	switch(id){
 		case ID_FILE_EXIT:
 			DestroyWindow(*this);
-			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(*this, about, "About", WS_CAPTION | WS_POPUP | MB_ICONINFORMATION);
+			MessageBox(*this, "Vježba 2.", "About", MB_ICONINFORMATION);
 			break;
-		case IDC_ADD:		
-			GetDlgItemText(*this, IDC_EDIT, text, buffsize);
+		case IDC_ADD:	
+			char text[256];
+			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
 			SendDlgItemMessage (*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);			
-			SendDlgItemMessage(*this, IDC_REMOVE, 0, 0, EnableWindow(GetDlgItem(*this, IDC_REMOVE), true));						
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);						
 			break;
 		case IDC_REMOVE:
-			i = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)i, 0);		
+			int i = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (i != LB_ERR) {
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)i, 0);
+			}
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}			
 			break;
 	}
-	delete[] text;
 }
 
 void MainWindow::OnDestroy(){
