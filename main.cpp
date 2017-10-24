@@ -54,10 +54,8 @@ void MainWindow::OnCommand(int id){
 			GetWindowText(GetDlgItem(*this, IDC_EDIT), chars, 10);
 			// TODO: add string to listbox control
 			SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, NULL, (LPARAM) chars);
-			
 			// TODO: enable "Remove" button
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
-			
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
