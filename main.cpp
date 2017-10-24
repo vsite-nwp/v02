@@ -33,7 +33,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button c; c.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 100, 50, 30);
 	Button a; a.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 100, 50, 30);
 	Edit e; e.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 250, 100, 50, 30);
-	ListBox BL; BL.Create(*this, WS_CHILD | WS_VISIBLE, "", IDC_LB, 300, 100, 50, 30);
+	ListBox BL; BL.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 300, 100, 50, 100);
 	EnableWindow(a, false);
 	return 0;
 }
@@ -57,6 +57,7 @@ void MainWindow::OnCommand(int id){
 			
 			// TODO: enable "Remove" button
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
