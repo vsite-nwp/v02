@@ -65,10 +65,10 @@ void MainWindow::OnCommand(int id){
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			else
 			{
-				if (itemIndex != 0)
-					itemIndex -= 1;
-					
-				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, itemIndex, NULL);
+				//if (itemIndex != 0) //druga verzija
+					//itemIndex -= 1; //druga verzija
+
+				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, max(0, itemIndex - 1), NULL);  // itemIndex, NULL); //druga verzija
 			}
 			break;
 	}
