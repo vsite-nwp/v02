@@ -43,7 +43,7 @@ void MainWindow::OnCommand(int id){
 		DestroyWindow(*this);
 		break;
 	case ID_HELP_ABOUT:
-		MessageBox(NULL, "Pomoć: \n bla bla ...", "Help", MB_OK |
+		MessageBox(*this, "Pomoć: \n itd....", "Help", MB_OK |
 			MB_ICONINFORMATION);
 		break;
 	case IDC_ADD:
@@ -60,7 +60,7 @@ void MainWindow::OnCommand(int id){
 			NULL);
 		if (itemIndex == LB_ERR)
 		{
-			MessageBox(NULL, "Please select item from the list!", "Hm...", MB_OK |
+			MessageBox(*this, "Odaberite nešto sa liste!", "Error", MB_OK |
 				MB_ICONEXCLAMATION);
 			break;
 		}
@@ -71,10 +71,8 @@ void MainWindow::OnCommand(int id){
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 		else
 		{
-			if (itemIndex == 0)
-				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, itemIndex, NULL);
-			else
-				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, itemIndex - 1, NULL);
+			
+				SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, max(0, itemIndex - 1), NULL);
 		}
 		break;
 	}
