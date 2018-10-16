@@ -1,6 +1,7 @@
 #include "nwpwin.h"
 #include "res.h"
 
+
 class Edit : public Window
 {
 protected:
@@ -29,25 +30,26 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	ListBox lb; lb.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, 1, 10, 10, 100, 120);
-	Edit ed; ed.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, 1, 120, 10, 80, 25);
-	Button b1; b1.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Add", 1, 120, 50, 80, 25);
-	Button b2; b2.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Remove", 1, 120, 85, 80, 25);
+	ListBox lb; lb.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, IDC_LB, 10, 10, 100, 120);
+	Edit ed; ed.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, IDC_EDIT, 120, 10, 80, 25);
+	Button b1; b1.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Add", IDC_ADD, 120, 50, 80, 25);
+	Button b2; b2.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Remove", IDC_REMOVE, 120, 85, 80, 25);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "", "about", id);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+				char buffer[1000];
+				GetWindowText(GetDlgItem(*this,IDC_EDIT), buffer, 1000);
+				SendMessage(GetDlgItem(*this,IDC_LB), LB_INSERTSTRING, NULL, (LPARAM)buffer);
+				SetWindowText(GetDlgItem(*this,IDC_EDIT), "");
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
