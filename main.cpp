@@ -1,8 +1,23 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Edit : public Window
+{
+protected:
+	std::string ClassName() override { return "Edit"; }
+};
+
+class Button : public Window
+{
+protected:
+	std::string ClassName() override { return "Button"; }
+};
+
+class ListBox : public Window
+{
+protected:
+	std::string ClassName() override { return "ListBox"; }
+};
 
 class MainWindow : public Window
 {
