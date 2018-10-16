@@ -43,18 +43,18 @@ void MainWindow::OnCommand(int id){
 			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(*this, "", "about", id);
+			MessageBox(*this, "About Text", "About", id);
 			break;
 		case IDC_ADD:
-				char buffer[1000];
-				GetWindowText(GetDlgItem(*this,IDC_EDIT), buffer, 1000);
-				SendMessage(GetDlgItem(*this,IDC_LB), LB_INSERTSTRING, NULL, (LPARAM)buffer);
-				SetWindowText(GetDlgItem(*this,IDC_EDIT), "");
+				char buffer[100];
+				GetDlgItemText(*this,IDC_EDIT, buffer, 100);
+				SendDlgItemMessage(*this,IDC_LB, LB_INSERTSTRING, NULL, (LPARAM)buffer);
+				SetDlgItemText(*this,IDC_EDIT, "");
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			HWND LB = GetDlgItem(*this, IDC_LB);
+			int itemId = SendMessage(LB, LB_GETCURSEL, 0, 0);
+			SendMessage(LB, LB_DELETESTRING, itemId, 0);
 			break;
 	}
 }
@@ -67,7 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu,CW_USEDEFAULT,CW_USEDEFAULT,300,200);	
 	// set icons
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
