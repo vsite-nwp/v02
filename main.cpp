@@ -31,9 +31,9 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	ListBox lb; lb.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, IDC_LB, 10, 10, 100, 120);
-	Edit ed; ed.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, IDC_EDIT, 120, 10, 80, 25);
+	Edit ed; ed.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, 0, IDC_EDIT, 120, 10, 80, 25); 
 	Button b1; b1.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Add", IDC_ADD, 120, 50, 80, 25);
-	Button b2; b2.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Remove", IDC_REMOVE, 120, 85, 80, 25);
+	Button b2; b2.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "Remove", IDC_REMOVE, 120, 85, 80, 25); EnableWindow(b2, false);
 	return 0;
 }
 
@@ -50,11 +50,15 @@ void MainWindow::OnCommand(int id){
 				GetDlgItemText(*this,IDC_EDIT, buffer, 100);
 				SendDlgItemMessage(*this,IDC_LB, LB_INSERTSTRING, NULL, (LPARAM)buffer);
 				SetDlgItemText(*this,IDC_EDIT, "");
+				if (!IsWindowEnabled(GetDlgItem(*this, IDC_REMOVE))) EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
 			HWND LB = GetDlgItem(*this, IDC_LB);
 			int itemId = SendMessage(LB, LB_GETCURSEL, 0, 0);
+			if(itemId != LB_ERR)
 			SendMessage(LB, LB_DELETESTRING, itemId, 0);
+			itemId = SendMessage(LB, LB_GETCOUNT, itemId, 0);
+			if (itemId == 0) EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
