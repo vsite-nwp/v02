@@ -43,7 +43,7 @@ void MainWindow::OnCommand(int id){
 			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(*this, "About Text", "About", id);
+			MessageBox(*this, "About Text", "About", MB_OK);
 			break;
 		case IDC_ADD:
 				char buffer[100];
@@ -57,8 +57,8 @@ void MainWindow::OnCommand(int id){
 			int itemId = SendMessage(LB, LB_GETCURSEL, 0, 0);
 			if(itemId != LB_ERR)
 			SendMessage(LB, LB_DELETESTRING, itemId, 0);
-			itemId = SendMessage(LB, LB_GETCOUNT, itemId, 0);
-			if (itemId == 0) EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			int itemCount = SendMessage(LB, LB_GETCOUNT, 0, 0);
+			if (itemCount == 0) EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
