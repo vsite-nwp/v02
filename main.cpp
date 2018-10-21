@@ -23,6 +23,8 @@ protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+	void OnAdd();
+	void OnRemove();
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
@@ -37,25 +39,24 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	return 0;
 }
 
-void HandleAddButton(HWND hw,int id) {
+void MainWindow::OnAdd() {
 	char buffer[50];
-	GetDlgItemTextA(hw, IDC_EDIT, buffer, 50);
-	LRESULT result = SendMessage(GetDlgItem(hw, IDC_LB), LB_ADDSTRING, NULL, (LPARAM)buffer);
+	GetDlgItemText(*this, IDC_EDIT, buffer, 50);
+	LRESULT result = SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, NULL, (LPARAM)buffer);
 	if (result != LB_ERR) {
-		EnableWindow(GetDlgItem(hw, IDC_REMOVE), true);
-		SetDlgItemText(hw, IDC_EDIT, "");
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+		SetDlgItemText(*this, IDC_EDIT, "");
 	}
 }
 
-void HandleRemoveButton(HWND hw,int id) {
-	HWND lb = GetDlgItem(hw, IDC_LB);
+void MainWindow::OnRemove() {
+	HWND lb = GetDlgItem(*this, IDC_LB);
 	LRESULT result = SendMessage(lb, LB_GETCURSEL, NULL, NULL);
-	LRESULT itemCount;
 	if (result != LB_ERR) {
 		SendMessage(lb, LB_DELETESTRING, (WPARAM)result, NULL);
-		itemCount = SendMessage(lb, LB_GETCOUNT, 0, 0);
+		LRESULT itemCount = SendMessage(lb, LB_GETCOUNT, 0, 0);
 		if (!itemCount) {
-			EnableWindow(GetDlgItem(hw, id), false);
+			EnableWindow(GetDlgItem(*this,IDC_REMOVE), false);
 		}
 	}
 }
@@ -69,10 +70,10 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "This is second exercise", "About",MB_OK);
 			break;
 		case IDC_ADD:
-			HandleAddButton(*this,id);
+			OnAdd();
 			break;
 		case IDC_REMOVE:
-			HandleRemoveButton(*this,id);
+			OnRemove();
 			break;
 	}
 }
