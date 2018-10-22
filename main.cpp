@@ -7,6 +7,7 @@ protected:
 	std::string ClassName() override { return "BUTTON"; }
 };
 
+
 class Edit :public Window {
 protected:
 	std::string ClassName() override { return "EDIT"; }
