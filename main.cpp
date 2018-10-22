@@ -43,20 +43,20 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnAdd() {
 	char buffer[50];
 	GetDlgItemText(*this, IDC_EDIT, buffer,50);
-	LRESULT result = SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)buffer);
+	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
 	if (result != LB_ERR) {
 		EnableWindow( GetDlgItem(*this, IDC_REMOVE),true);
-		SetDlgItemTextA(*this, IDC_EDIT, "");
+		SetDlgItemText(*this, IDC_EDIT, "");
 	}
 
 
 }
 
 void MainWindow::OnRemove() {
-	LRESULT result = SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCURSEL, 0, (LPARAM)"");
+	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)"");
 	if (result != LB_ERR) {
-		SendMessage(GetDlgItem(*this, IDC_LB), LB_DELETESTRING, (LPARAM)result, 0);
-		LRESULT count = SendDlgItemMessageA(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (LPARAM)result, 0);
+		LRESULT count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 		if (count == 0) {
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 		}
