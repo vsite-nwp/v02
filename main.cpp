@@ -1,8 +1,21 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+
+class Button :public Window {
+protected:
+	std::string ClassName() override { return "BUTTON"; }
+};
+
+class Edit :public Window {
+protected:
+	std::string ClassName() override { return "EDIT"; }
+};
+
+class ListBox :public Window {
+protected:
+	std::string ClassName() override { return "LISTBOX"; }
+};
 
 class MainWindow : public Window
 {
@@ -14,28 +27,59 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	ListBox lb;
+	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 50, 50, 130, 150);
+	Edit ed;
+	ed.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 50, 100, 30);
+	Button add, remove;
+	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 100, 100, 30);
+	remove.Create(*this, WS_CHILD | WS_DISABLED | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 150, 100, 30);
 	return 0;
 }
 
+void add(HWND hw, int id) {
+	char buffer[50];
+	GetDlgItemText(hw, IDC_EDIT, buffer,50);
+	LRESULT result = SendMessage(GetDlgItem(hw, IDC_LB), LB_ADDSTRING, 0, (LPARAM)buffer);
+	if (result != LB_ERR) {
+		EnableWindow( GetDlgItem(hw, IDC_REMOVE),true);
+		SetDlgItemTextA(
+			hw,
+			IDC_EDIT,
+               ""
+             );
+	}
+
+
+}
+
+void remove(HWND hw, int id) {
+	LRESULT result = SendMessage(GetDlgItem(hw, IDC_LB), LB_GETCURSEL, 0, (LPARAM)"");
+	LRESULT count;
+	if (result != LB_ERR) {
+		SendMessage(GetDlgItem(hw, IDC_LB), LB_DELETESTRING, (LPARAM)result, 0);
+		count = SendMessage(GetDlgItem(hw, IDC_LB), LB_GETCOUNT, 0, 0);
+		if (count == 0) {
+			EnableWindow(GetDlgItem(hw, IDC_REMOVE), false);
+		}
+	}
+}
+
+
 void MainWindow::OnCommand(int id){
+	Edit ed;
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "We will help!", "Help", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			add(*this, id);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			remove(*this, id);
 			break;
 	}
 }
