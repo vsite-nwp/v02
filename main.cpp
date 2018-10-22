@@ -24,6 +24,8 @@ protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+	void OnAdd();
+	void OnRemove();
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
@@ -38,30 +40,25 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	return 0;
 }
 
-void add(HWND hw, int id) {
+void MainWindow::OnAdd() {
 	char buffer[50];
-	GetDlgItemText(hw, IDC_EDIT, buffer,50);
-	LRESULT result = SendMessage(GetDlgItem(hw, IDC_LB), LB_ADDSTRING, 0, (LPARAM)buffer);
+	GetDlgItemText(*this, IDC_EDIT, buffer,50);
+	LRESULT result = SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)buffer);
 	if (result != LB_ERR) {
-		EnableWindow( GetDlgItem(hw, IDC_REMOVE),true);
-		SetDlgItemTextA(
-			hw,
-			IDC_EDIT,
-               ""
-             );
+		EnableWindow( GetDlgItem(*this, IDC_REMOVE),true);
+		SetDlgItemTextA(*this, IDC_EDIT, "");
 	}
 
 
 }
 
-void remove(HWND hw, int id) {
-	LRESULT result = SendMessage(GetDlgItem(hw, IDC_LB), LB_GETCURSEL, 0, (LPARAM)"");
-	LRESULT count;
+void MainWindow::OnRemove() {
+	LRESULT result = SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCURSEL, 0, (LPARAM)"");
 	if (result != LB_ERR) {
-		SendMessage(GetDlgItem(hw, IDC_LB), LB_DELETESTRING, (LPARAM)result, 0);
-		count = SendMessage(GetDlgItem(hw, IDC_LB), LB_GETCOUNT, 0, 0);
+		SendMessage(GetDlgItem(*this, IDC_LB), LB_DELETESTRING, (LPARAM)result, 0);
+		LRESULT count = SendDlgItemMessageA(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 		if (count == 0) {
-			EnableWindow(GetDlgItem(hw, IDC_REMOVE), false);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 		}
 	}
 }
@@ -77,10 +74,10 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "We will help!", "Help", MB_OK);
 			break;
 		case IDC_ADD:
-			add(*this, id);
+			OnAdd();
 			break;
 		case IDC_REMOVE:
-			remove(*this, id);
+			OnRemove();
 			break;
 	}
 }
