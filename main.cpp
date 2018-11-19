@@ -10,7 +10,7 @@ protected:
 		return "EDIT"; 
 	}
 };
-
+ 
 class Button : public Window
 {
 protected:
@@ -19,7 +19,7 @@ protected:
 		return "BUTTON";
 	}
 };
-
+ 
 class ListBox : public Window
 {
 protected:
