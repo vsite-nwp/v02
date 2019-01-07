@@ -78,8 +78,7 @@ void MainWindow::OnCommand(int id){
 		case IDC_REMOVE:
 			int item = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (item != LB_ERR) {
-				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)item, 0);
-			}
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)item, 0);			}
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
