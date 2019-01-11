@@ -24,10 +24,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
-
-
 	ListBox listBox;
 	Edit edit;
 	Button addButton;
@@ -45,17 +41,14 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			
 			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+
 			MessageBox(*this, "About", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
 
 			char content[64];
 			GetDlgItemText(*this, IDC_EDIT, content, sizeof(content));
@@ -68,9 +61,6 @@ void MainWindow::OnCommand(int id){
 			break;
 
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
 
 			int item = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (item != LB_ERR) {
