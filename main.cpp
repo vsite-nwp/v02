@@ -1,8 +1,20 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class ListBox :public Window {
+protected:
+	std::string ClassName() override { return "LISTBOX"; }
+};
+
+class Button :public Window {
+protected:
+	std::string ClassName() override { return "BUTTON"; }
+};
+
+class Edit : public Window {
+protected:
+	std::string ClassName() override { return "EDIT"; }
+};
 
 class MainWindow : public Window
 {
@@ -14,28 +26,45 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	ListBox lBox;
+	Edit edit;
+	Button butt_1, butt_2;
+
+	lBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 20, 100, 120);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 130, 20, 100, 25);
+	butt_1.Create(*this, WS_CHILD | WS_VISIBLE , "ADD", IDC_ADD, 130, 50, 100, 25);
+	butt_2.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "REMOVE", IDC_REMOVE, 130, 80, 100, 25);
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+	
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
+	char text[50];
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Ovo je 2. vjezba ", "Help", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			if (GetDlgItemText(*this, IDC_EDIT, text, sizeof(text))!=0) {  //da ne mozemo staviti prazan string
+				SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)text);  //salje u LB ono sto smo napiasli
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+				SetDlgItemText(*this, IDC_EDIT, "");         //brise iz edita ono sto smo napisali
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (itemIndex == LB_ERR)
+				break;
+			else
+				SendDlgItemMessage(*this , IDC_LB, LB_DELETESTRING, itemIndex, 0);
+
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0) == 0)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+
 			break;
 	}
 }
