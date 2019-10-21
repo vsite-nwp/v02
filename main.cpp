@@ -25,7 +25,7 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
+	
 	ListBox lb;
 	lb.Create(*this, WS_CHILD | WS_VISIBLE, "", IDC_LB, 50, 50, 100, 120);
 
@@ -33,8 +33,12 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ed.Create(*this, WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 150, 50, 100, 25);
 
 	Button add;
+	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 85, 100, 25);
 
-	// TODO: disable "Remove" button
+	Button remove;
+	remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 100, 100, 25);
+	EnableWindow(remove, false);
+
 	return 0;
 }
 
