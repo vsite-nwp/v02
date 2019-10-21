@@ -1,9 +1,22 @@
-#include "nwpwin.h"
+﻿#include "nwpwin.h"
 #include "res.h"
 
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
 // TODO: derive from Window, override ClassName
+//done i hopeˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+class Button :public Window {
+public:
+	std::string ClassName() { return "BUTTON"; }
 
+};
+class ListBox :public Window {
+	std::string ClassName() { return "LISTBOX"; }
+
+};
+class Edit :public Window {
+	std::string ClassName() { return "EDIT"; }
+
+};
 class MainWindow : public Window
 {
 protected:
@@ -14,6 +27,13 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
+	Button b1,b2;
+	ListBox lb1;
+	Edit e1;
+	e1.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER, "Input", IDC_EDIT, 200, 50, 100, 40);
+	b1.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 100, 100, 40);
+	b1.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 150,100, 40);
+	lb1.Create(*this, WS_CHILD |WS_VISIBLE| WS_CAPTION, "List", IDC_LB, 100, 50, 100, 200);
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
 	return 0;
@@ -28,6 +48,9 @@ void MainWindow::OnCommand(int id){
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
+			LPSTR stringy;
+			GetDlgItemTextA(*this, id, stringy, 100);
+			SendDlgItemMessageA(*this,IDC_LB,)
 			// TODO: get text from edit control
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
