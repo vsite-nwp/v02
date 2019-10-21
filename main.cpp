@@ -18,7 +18,7 @@ class MainWindow : public Window
 {
 protected:
 	int OnCreate(CREATESTRUCT* pcs);
-	void OnCommand(int id);
+	void OnCommand(int id, int notifiaction);
 	void OnDestroy();
 };
 
@@ -34,8 +34,17 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	return 0;
 }
 
-void MainWindow::OnCommand(int id){
+void MainWindow::OnCommand(int id, int notification){
 	switch(id){
+		case IDC_LB:
+			if (notification == LBN_SELCHANGE)
+			{
+				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETSEL, NULL, NULL);
+				char text[128];
+				SendDlgItemMessage(*this, IDC_LB, LB_GETTEXT, lbitem, (LPARAM)(LPSTR)text);
+				SetDlgItemText(*this, IDC_EDIT, text);
+			}
+			break;
 		case ID_FILE_EXIT:
 			DestroyWindow(*this);
 			break;
@@ -47,10 +56,11 @@ void MainWindow::OnCommand(int id){
 			GetDlgItemText(*this, IDC_EDIT, msg, 50);
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)msg);
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			SetDlgItemText(*this, IDC_EDIT, "");
 			break;
 		case IDC_REMOVE:
-			int zb_index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)zb_index, NULL);
+			int lb_item_index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)lb_item_index, NULL);
 			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
