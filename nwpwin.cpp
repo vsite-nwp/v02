@@ -1,4 +1,5 @@
 #include "nwpwin.h"
+#include <sstream>
 
 int Application::Run()
 {
@@ -32,8 +33,9 @@ bool Window::Register(const std::string& name)
 std::string Window::GenerateClassName()
 {
 	static int cnt=1;
-	char s[16]; sprintf(s, "NWP%d", cnt++);
-	return std::string(s);
+	std::stringstream ss;
+	ss << "NWP" << cnt++;
+	return ss.str();
 }
 
 Window::Window() : hw(0) {}
