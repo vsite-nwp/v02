@@ -1,9 +1,6 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
-
 class Button : public Window {
 protected:
 	std::string ClassName() override { return "BUTTON"; }
@@ -17,19 +14,16 @@ protected:
 	std::string ClassName() override { return "LISTBOX"; }
 };
 
-class MainWindow : public Window
-{
+class MainWindow : public Window {
 protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+	void OnAdd();
+	void OnRemove();
 };
 
-int MainWindow::OnCreate(CREATESTRUCT* pcs)
-{
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
-
+int MainWindow::OnCreate(CREATESTRUCT* pcs) {
 	ListBox lb;
 	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 30, 30, 200, 200);
 	Edit edit;
@@ -41,23 +35,40 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	return 0;
 }
 
+void MainWindow::OnAdd() {
+	char buffer[30];
+	GetDlgItemText(*this, IDC_EDIT, buffer, 30);
+	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
+	if (result != LB_ERR) {
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+		SetDlgItemText(*this, IDC_EDIT, "");
+	}
+}
+
+void MainWindow::OnRemove() {
+	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)"");
+	if (result != LB_ERR) {
+		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (LPARAM)result, 0);
+		LRESULT count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+		if (count == 0) {
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+		}
+	}
+}
+
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Help is cool", "Help", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			OnAdd();
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			OnRemove();
 			break;
 	}
 }
@@ -66,8 +77,7 @@ void MainWindow::OnDestroy(){
 	::PostQuitMessage(0);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
-{
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow) {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
 	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
