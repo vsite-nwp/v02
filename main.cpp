@@ -43,9 +43,10 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "You need help? Go get help.", "HELP!", MB_OK | MB_ICONQUESTION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char text[30];
+			GetDlgItemText(*this, IDC_EDIT, text, 30);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
