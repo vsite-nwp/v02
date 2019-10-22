@@ -102,7 +102,7 @@ void MainWindow::OnClose()
 	{
 		char buff[100];
 		LoadString(0, IDS_WARN, buff, std::size(buff));
-		if (IDNO == MessageBox(*this, "Do you want to close window?", "Warn", MB_YESNO | MB_ICONWARNING))
+		if (IDNO == MessageBox(*this, buff, "Warn", MB_YESNO | MB_ICONWARNING))
 		{
 			return;
 		}
@@ -141,7 +141,7 @@ void MainWindow::OnAdd()
 void MainWindow::OnRemove()
 {
 	const int selectedIndex = SendMessage(mListBox, LB_GETCURSEL, 0, 0);
-	if (selectedIndex > -1)
+	if (selectedIndex > -1) 
 	{
 		SendMessage(mListBox, LB_DELETESTRING, selectedIndex, 0);
 		if (SendMessage(mListBox, LB_GETCOUNT, 0, 0) <= 0)
