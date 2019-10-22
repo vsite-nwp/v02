@@ -28,7 +28,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ListBox lb1;
 	Edit ed1;
 	lb1.Create(*this, WS_CHILD | WS_BORDER | WS_VISIBLE, "", IDC_LB, 10, 10, 200, 300);
-	ed1.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 220, 10, 160, 30);
+	ed1.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 220, 10, 160, 20);
 	btn1.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 250, 50, 100, 30);
 	btn2.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 250, 90, 100, 30);
 	return 0;
@@ -44,14 +44,17 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			char text[30];
-			GetDlgItemText(*this, IDC_EDIT, text, 30);
-			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
-			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			if (GetDlgItemText(*this, IDC_EDIT, text, 30)) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+				//SendDlgItemMessage(*this, IDC_EDIT, EM_EMPTYUNDOBUFFER, 0, 0);
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int index = SendDlgItemMessage(*this,IDC_LB,LB_GETCURSEL,0,0);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
