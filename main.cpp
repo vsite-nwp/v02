@@ -39,7 +39,7 @@ void MainWindow::OnCommand(int id, int notification){
 		case IDC_LB:
 			if (notification == LBN_SELCHANGE)
 			{
-				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETCARETINDEX, NULL, NULL);
+				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 				char text[128];
 				SendDlgItemMessage(*this, IDC_LB, LB_GETTEXT, lbitem, (LPARAM)(LPSTR)text);
 				SetDlgItemText(*this, IDC_EDIT, text);
