@@ -30,7 +30,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ed.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 210, 10, 150, 35);
 	bt1.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 210, 80, 150, 35);
 	bt2.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 210, 130, 150, 35);
-	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 180, 200);
+	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER | LBS_NOTIFY, "", IDC_LB, 10, 10, 180, 200);
 	return 0;
 }
 
@@ -39,7 +39,7 @@ void MainWindow::OnCommand(int id, int notification){
 		case IDC_LB:
 			if (notification == LBN_SELCHANGE)
 			{
-				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETSEL, NULL, NULL);
+				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETCARETINDEX, NULL, NULL);
 				char text[128];
 				SendDlgItemMessage(*this, IDC_LB, LB_GETTEXT, lbitem, (LPARAM)(LPSTR)text);
 				SetDlgItemText(*this, IDC_EDIT, text);
