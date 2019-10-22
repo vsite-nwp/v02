@@ -2,6 +2,20 @@
 
 IDI_V2 ICON "v2.ico"
 
+STRINGTABLE
+BEGIN
+	IDS_BUTTON "BUTTON"
+	IDS_LB "LISTBOX"
+	IDS_EDIT "EDIT"
+	IDS_REMOVE "Remove"
+	IDS_ADD "Add"
+	IDS_BAD_INDEX "Unable to add string(Edit box was empty!!)"
+	IDS_ERROR "Something went wrong, please look at log file."
+	IDS_ERROR_INDEX "Please select propert column to erase. Dont select index 0."
+	IDS_DIAG_TEXT "NWP 2."
+	IDS_WARN "Are you sure about closing the window, your data will be lost?"
+END
+
 IDM_V2 MENU
 BEGIN
     POPUP "&File"

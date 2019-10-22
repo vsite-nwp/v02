@@ -1,8 +1,37 @@
 #include "nwpwin.h"
 #include "res.h"
+class Button : public Window
+{
+protected:
+	virtual std::string ClassName() override;
+};
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class ListBox : public Window
+{
+protected:
+	virtual std::string ClassName() override;
+};
+
+class Edit : public Window
+{
+protected:
+	virtual std::string ClassName() override;
+};
+
+std::string Button::ClassName()
+{
+	return "Button";
+}
+
+std::string ListBox::ClassName()
+{
+	return "ListBox";
+}
+
+std::string Edit::ClassName()
+{
+	return "Edit";
+}
 
 class MainWindow : public Window
 {
@@ -10,38 +39,122 @@ protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+	void OnClose();
+	void OnAdd();
+	void OnRemove();
+private:
+	Button mButton;
+	ListBox mListBox;
+	Edit mEdit;
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	mListBox.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_LB, 50, 100, 100, 200);
+	mEdit.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 160, 100, 120, 30);
+
+	char str[40]; LoadString(0, IDS_ADD, str, std::size(str));
+	mButton.Create(*this, WS_VISIBLE | WS_CHILD, str, IDC_ADD, 160, 135, 120, 30);
+
+	LoadString(0, IDS_REMOVE, str, std::size(str));
+	mButton.Create(*this, WS_VISIBLE | WS_CHILD, str, IDC_REMOVE, 160, 165, 120, 30);
+
+	EnableWindow(mButton, false);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
-	switch(id){
+	switch(id)
+	{
 		case ID_FILE_EXIT:
-			// TODO: close main window
+		{
+			OnDestroy();
 			break;
+		}
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+		{
+			char buff[50];
+			LoadString(0, IDS_DIAG_TEXT, buff, std::size(buff));
+			MessageBox(*this, buff, "Help", MB_OK);
 			break;
+		}
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+		{
+			OnAdd();
 			break;
+		}
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+		{
+			OnRemove();
 			break;
+		}
 	}
 }
 
-void MainWindow::OnDestroy(){
+void MainWindow::OnDestroy()
+{
 	::PostQuitMessage(0);
+}
+
+void MainWindow::OnClose()
+{
+	if (SendMessage(mListBox, LB_GETCOUNT, 0, 0) > 0)
+	{
+		char buff[100];
+		LoadString(0, IDS_WARN, buff, std::size(buff));
+		if (IDNO == MessageBox(*this, "Do you want to close window?", "Warn", MB_YESNO | MB_ICONWARNING))
+		{
+			return;
+		}
+		//  in case that yes is pressed
+		OnDestroy();
+	}
+	//  in case that there is nothing in ListBox
+	OnDestroy();
+}
+
+void MainWindow::OnAdd()
+{
+	char buff[70];
+	::GetWindowText(mEdit, buff, std::size(buff));
+	if (buff)
+	{
+		if (std::strlen(buff) != 0)
+		{
+			//  API function will return LB_ERR if there is issufficent space to store new string.
+			if (::SendMessage(mListBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(buff)) == LB_ERR)
+			{
+				LoadString(0, IDS_ERROR, buff, std::size(buff));
+				MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
+			}
+			EnableWindow(mButton, true);
+		}
+		else
+		{
+			//  word was not selected
+			LoadString(0, IDS_BAD_INDEX, buff, std::size(buff));
+			MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
+		}
+	}
+}
+
+void MainWindow::OnRemove()
+{
+	const int selectedIndex = SendMessage(mListBox, LB_GETCURSEL, 0, 0);
+	if (selectedIndex > -1)
+	{
+		SendMessage(mListBox, LB_DELETESTRING, selectedIndex, 0);
+		if (SendMessage(mListBox, LB_GETCOUNT, 0, 0) <= 0)
+		{
+			EnableWindow(mButton, false);
+		}
+	}
+	else if(selectedIndex == LB_ERR)
+	{
+		char buff[100];
+		LoadString(0, IDS_ERROR_INDEX, buff, std::size(buff));
+		MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
+	}
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
