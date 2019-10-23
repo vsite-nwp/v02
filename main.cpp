@@ -58,11 +58,14 @@ void MainWindow::OnCommand(int id, int notification){
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			SetDlgItemText(*this, IDC_EDIT, "");
 			break;
-		case IDC_REMOVE:
-			int lb_item_index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)lb_item_index, NULL);
-			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+		case IDC_REMOVE:			
+				int lb_item_index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+				if (lb_item_index != -1)
+				{
+					SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)lb_item_index, NULL);
+					if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
+						EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+				}
 			break;
 	}
 }
