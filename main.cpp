@@ -41,7 +41,7 @@ void MainWindow::OnCommand(int id, int notification){
 			{
 				int lbitem = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
 				char text[128];
-				SendDlgItemMessage(*this, IDC_LB, LB_GETTEXT, lbitem, (LPARAM)(LPSTR)text);
+				SendDlgItemMessage(*this, IDC_LB, LB_GETTEXT, lbitem, reinterpret_cast<LPARAM>(text));
 				SetDlgItemText(*this, IDC_EDIT, text);
 			}
 			break;
@@ -49,7 +49,7 @@ void MainWindow::OnCommand(int id, int notification){
 			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, "No help here", "Help", MB_OK | MB_ICONINFORMATION);
+			MessageBox(*this, "No help here", "Help", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
 			char msg[50];

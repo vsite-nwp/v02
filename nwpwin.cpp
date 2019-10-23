@@ -68,7 +68,7 @@ LRESULT CALLBACK Window::Proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 	Window* pThis = reinterpret_cast<Window*>(::GetWindowLong(hwnd, 0));
 	switch (message)
 	{
-		case WM_COMMAND: pThis->OnCommand(LOWORD(wParam)); return 0;
+		case WM_COMMAND: pThis->OnCommand(LOWORD(wParam), HIWORD(wParam)); return 0;
 		case WM_DESTROY: pThis->OnDestroy(); return 0;
 	}
 	return ::DefWindowProc(hwnd, message, wParam, lParam);

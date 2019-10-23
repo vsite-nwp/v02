@@ -28,6 +28,6 @@ public:
 //	messages
 protected:
 	virtual int OnCreate(CREATESTRUCT*) { return 0; }
-	virtual void OnCommand(int)  { }
+	virtual void OnCommand(int id, int notification)  { }
 	virtual void OnDestroy()  { }
 };
