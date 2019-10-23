@@ -15,6 +15,10 @@
 #define IDS_ERROR_INDEX   307
 #define IDS_DIAG_TEXT	  308
 #define IDS_WARN          309
+#define IDS_CAPT_WARN     310
+#define IDS_CAPT_ERROR	  311
+#define IDS_CAPT_HELP	  312
+
 
 #define IDM_V2            400
 #define ID_FILE_EXIT      401

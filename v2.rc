@@ -14,6 +14,10 @@ BEGIN
 	IDS_ERROR_INDEX "Please select propert column to erase. Dont select index 0."
 	IDS_DIAG_TEXT "NWP 2."
 	IDS_WARN "Are you sure about closing the window, your data will be lost?"
+
+	IDS_CAPT_WARN "Warn"
+	IDS_CAPT_ERROR "Error"
+	IDS_CAPT_HELP "Help"
 END
 
 IDM_V2 MENU

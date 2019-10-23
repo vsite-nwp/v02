@@ -3,19 +3,19 @@
 class Button : public Window
 {
 protected:
-	virtual std::string ClassName() override;
+	std::string ClassName() override;
 };
 
 class ListBox : public Window
 {
 protected:
-	virtual std::string ClassName() override;
+	std::string ClassName() override;
 };
 
 class Edit : public Window
 {
 protected:
-	virtual std::string ClassName() override;
+	std::string ClassName() override;
 };
 
 std::string Button::ClassName()
@@ -42,24 +42,34 @@ protected:
 	void OnClose();
 	void OnAdd();
 	void OnRemove();
+	
+	std::string LoadMessageFromRes(UINT id);
 private:
-	Button mButton;
+	Button mAdd;
+	Button mRemove;
 	ListBox mListBox;
 	Edit mEdit;
 };
+
+std::string MainWindow::LoadMessageFromRes(UINT id)
+{
+	char buff[100];
+	int len = ::LoadString(0, id, buff, std::size(buff));
+	if (len > 0)
+	{
+		return std::string(buff);
+	}
+	return std::string();
+}
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	mListBox.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_LB, 50, 100, 100, 200);
 	mEdit.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 160, 100, 120, 30);
+	mAdd.Create(*this, WS_VISIBLE | WS_CHILD, LoadMessageFromRes(IDS_ADD).c_str(), IDC_ADD, 160, 135, 120, 30);
+	mRemove.Create(*this, WS_VISIBLE | WS_CHILD, LoadMessageFromRes(IDS_REMOVE).c_str(), IDC_REMOVE, 160, 165, 120, 30);
 
-	char str[40]; LoadString(0, IDS_ADD, str, std::size(str));
-	mButton.Create(*this, WS_VISIBLE | WS_CHILD, str, IDC_ADD, 160, 135, 120, 30);
-
-	LoadString(0, IDS_REMOVE, str, std::size(str));
-	mButton.Create(*this, WS_VISIBLE | WS_CHILD, str, IDC_REMOVE, 160, 165, 120, 30);
-
-	EnableWindow(mButton, false);
+	EnableWindow(mRemove, false);
 	return 0;
 }
 
@@ -73,9 +83,7 @@ void MainWindow::OnCommand(int id){
 		}
 		case ID_HELP_ABOUT:
 		{
-			char buff[50];
-			LoadString(0, IDS_DIAG_TEXT, buff, std::size(buff));
-			MessageBox(*this, buff, "Help", MB_OK);
+			MessageBox(*this, LoadMessageFromRes(IDS_DIAG_TEXT).c_str(), LoadMessageFromRes(IDS_CAPT_HELP).c_str(), MB_OK);
 			break;
 		}
 		case IDC_ADD:
@@ -98,62 +106,54 @@ void MainWindow::OnDestroy()
 
 void MainWindow::OnClose()
 {
-	if (SendMessage(mListBox, LB_GETCOUNT, 0, 0) > 0)
+	const int count = ::SendMessage(mListBox, LB_GETCOUNT, 0, 0);
+	if (count > 0)
 	{
-		char buff[100];
-		LoadString(0, IDS_WARN, buff, std::size(buff));
-		if (IDNO == MessageBox(*this, buff, "Warn", MB_YESNO | MB_ICONWARNING))
+		if (::MessageBox(*this, LoadMessageFromRes(IDS_WARN).c_str(), LoadMessageFromRes(IDS_CAPT_WARN).c_str(), MB_YESNO | MB_ICONWARNING) == IDNO)
 		{
 			return;
 		}
-		//  in case that yes is pressed
-		OnDestroy();
 	}
-	//  in case that there is nothing in ListBox
-	OnDestroy();
+	//  in case that there is nothing in ListBox and, if yes is pressed
+	DestroyWindow(*this);
 }
 
 void MainWindow::OnAdd()
 {
 	char buff[70];
-	::GetWindowText(mEdit, buff, std::size(buff));
-	if (buff)
+	const int len = ::GetWindowText(mEdit, buff, std::size(buff));
+	if (len != 0)
 	{
-		if (std::strlen(buff) != 0)
+		//  API function will return LB_ERR if there is issufficent space to store new string.
+		if (::SendMessage(mListBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(buff)) == LB_ERR)
 		{
-			//  API function will return LB_ERR if there is issufficent space to store new string.
-			if (::SendMessage(mListBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(buff)) == LB_ERR)
-			{
-				LoadString(0, IDS_ERROR, buff, std::size(buff));
-				MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
-			}
-			EnableWindow(mButton, true);
+			::MessageBox(*this, LoadMessageFromRes(IDS_ERROR).c_str(), LoadMessageFromRes(IDS_CAPT_ERROR).c_str(), MB_OK | MB_ICONERROR);
 		}
-		else
-		{
-			//  word was not selected
-			LoadString(0, IDS_BAD_INDEX, buff, std::size(buff));
-			MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
-		}
+		::EnableWindow(mRemove, true);
 	}
+	else
+	{
+		//  word was not selected
+		::MessageBox(*this, LoadMessageFromRes(IDS_BAD_INDEX).c_str(), LoadMessageFromRes(IDS_CAPT_ERROR).c_str(), MB_OK | MB_ICONERROR);
+	}
+	
 }
 
 void MainWindow::OnRemove()
 {
-	const int selectedIndex = SendMessage(mListBox, LB_GETCURSEL, 0, 0);
+	const int selectedIndex = ::SendMessage(mListBox, LB_GETCURSEL, 0, 0);
 	if (selectedIndex > -1) 
 	{
-		SendMessage(mListBox, LB_DELETESTRING, selectedIndex, 0);
-		if (SendMessage(mListBox, LB_GETCOUNT, 0, 0) <= 0)
+		::SendMessage(mListBox, LB_DELETESTRING, selectedIndex, 0);
+		const int count = ::SendMessage(mListBox, LB_GETCOUNT, 0, 0);
+		if (count <= 0)
 		{
-			EnableWindow(mButton, false);
+			::EnableWindow(mRemove, false);
 		}
 	}
-	else if(selectedIndex == LB_ERR)
+	else
 	{
-		char buff[100];
-		LoadString(0, IDS_ERROR_INDEX, buff, std::size(buff));
-		MessageBox(*this, buff, "Error", MB_OK | MB_ICONERROR);
+		::MessageBox(*this, LoadMessageFromRes(IDS_ERROR_INDEX).c_str(), LoadMessageFromRes(IDS_CAPT_ERROR).c_str(), MB_OK | MB_ICONERROR);
 	}
 }
 
