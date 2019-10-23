@@ -35,7 +35,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button b2;
 	b2.Create(*this, WS_VISIBLE | WS_CHILD, "Remove", IDC_REMOVE, 500, 200, 150, 40);
 	LBox l;
-	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY ,"",100, 300, 150 ,150, 150);
+	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY ,"",IDC_LB, 300, 150 ,150, 150);
 	Edit e;
 	e.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 300, 100, 200, 25);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
