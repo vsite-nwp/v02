@@ -56,8 +56,8 @@ void MainWindow::OnCommand(int id){
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
 				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-				break;
 			}
+			break;
 	}
 }
 
