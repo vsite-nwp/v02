@@ -33,11 +33,11 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button b1;
 	b1.Create(*this, WS_VISIBLE | WS_CHILD, "Add",IDC_ADD,500, 150 ,150 ,40);
 	Button b2;
-	b2.Create(*this, WS_VISIBLE | WS_CHILD, "Remove", IDC_ADD, 500, 200, 150, 40);
+	b2.Create(*this, WS_VISIBLE | WS_CHILD, "Remove", IDC_REMOVE, 500, 200, 150, 40);
 	LBox l;
-	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY ,"LIST",100, 300, 150 ,150, 150);
+	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY ,"",100, 300, 150 ,150, 150);
 	Edit e;
-	e.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 300, 100, 200, 25);
+	e.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 300, 100, 200, 25);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
@@ -58,12 +58,11 @@ void MainWindow::OnCommand(int id){
 			char word[10];
 
 			GetDlgItemText(*this, IDC_EDIT, word, sizeof(word));
-
-			if (strlen(word) != 0) {
-				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)word);
-				SetDlgItemText(*this, IDC_EDIT, "");
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
-			}
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)word);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			SetDlgItemText(*this, IDC_EDIT, "");
+				
+			
 			// TODO: get text from edit control
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
