@@ -44,18 +44,20 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_ADD:
 			char text[30];
-			if (GetDlgItemText(*this, IDC_EDIT, text, 30)) {
+			if (GetDlgItemText(*this, IDC_EDIT, text, sizeof(text))) {
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
-				//SendDlgItemMessage(*this, IDC_EDIT, EM_EMPTYUNDOBUFFER, 0, 0);
+				SetDlgItemText(*this, IDC_EDIT, "");
 			}
 			break;
 		case IDC_REMOVE:
-			int index = SendDlgItemMessage(*this,IDC_LB,LB_GETCURSEL,0,0);
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
-			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
-				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-			break;
+			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (index != LB_ERR) {
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
+				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+				break;
+			}
 	}
 }
 
@@ -67,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE ,  "NWP 2", (int)hMenu);	
 	// set icons
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
