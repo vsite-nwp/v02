@@ -55,11 +55,27 @@ void MainWindow::OnCommand(int id){
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
+			char word[10];
+
+			GetDlgItemText(*this, IDC_EDIT, word, sizeof(word));
+
+			if (strlen(word) != 0) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)word);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
 			// TODO: get text from edit control
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
+			int ind = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			if (ind != -1)
+			{
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)ind, NULL);
+				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
 			// TODO: get listbox selection
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
