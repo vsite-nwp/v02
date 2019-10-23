@@ -26,7 +26,6 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
 	Button add, remove;
 	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 130, 40, 100, 25);
 	remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 130, 70, 100, 25);
@@ -37,17 +36,16 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	ListBox listbox;
 	listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 110, 100);
 	
-	// TODO: disable "Remove" button
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Puno zuji, malo meda daje...", "O Programu", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
