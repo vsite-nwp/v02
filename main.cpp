@@ -40,7 +40,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
-	char text[50];
+	
 	switch(id){
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
@@ -49,6 +49,7 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Ovo je 2. vjezba ", "Help", MB_OK);
 			break;
 		case IDC_ADD:
+			char text[50];
 			if (GetDlgItemText(*this, IDC_EDIT, text, sizeof(text))!=0) {  //da ne mozemo staviti prazan string
 				SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)text);  //salje u LB ono sto smo napiasli
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
@@ -62,7 +63,7 @@ void MainWindow::OnCommand(int id){
 			else
 				SendDlgItemMessage(*this , IDC_LB, LB_DELETESTRING, itemIndex, 0);
 
-			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0) == 0)
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 
 			break;
