@@ -1,17 +1,20 @@
 #include "nwpwin.h"
 #include "res.h"
 
-class Button : public Window {
+class Button : public Window 
+{
 public:
 	std::string ClassName() { return "BUTTON"; }
 };
 
-class Edit : public Window {
+class Edit : public Window 
+{
 public:
 	std::string ClassName() { return "EDIT"; }
 };
 
-class ListBox : public Window {
+class ListBox : public Window 
+{
 public:
 	std::string ClassName() { return "LISTBOX"; }
 };
@@ -39,8 +42,10 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	return 0;
 }
 
-void MainWindow::OnCommand(int id){
-	switch(id){
+void MainWindow::OnCommand(int id)
+{
+	switch(id)
+	{
 		case ID_FILE_EXIT:
 			OnDestroy();
 			break;
@@ -48,9 +53,15 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Puno zuji, malo meda daje...", "O Programu", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char editText[16];
+			if (GetDlgItemText(*this, IDC_EDIT, editText, sizeof(editText)))
+			{
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)editText);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
+			
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
@@ -60,7 +71,8 @@ void MainWindow::OnCommand(int id){
 	}
 }
 
-void MainWindow::OnDestroy(){
+void MainWindow::OnDestroy()
+{
 	::PostQuitMessage(0);
 }
 
