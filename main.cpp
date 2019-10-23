@@ -38,6 +38,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY ,"LIST",100, 300, 150 ,150, 150);
 	Edit e;
 	e.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 300, 100, 200, 25);
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
 	return 0;
@@ -46,9 +47,11 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
+			PostQuitMessage(0);
 			// TODO: close main window
 			break;
 		case ID_HELP_ABOUT:
+			MessageBox(*this, "This is dialog with text", "About", MB_OK);
 			// TODO: show dialog with text
 			break;
 		case IDC_ADD:
