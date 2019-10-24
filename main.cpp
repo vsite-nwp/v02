@@ -2,8 +2,7 @@
 #include "res.h"
 using namespace std;
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+
 class Button : public Window {
 public:
 	std::string ClassName(){
@@ -39,8 +38,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Edit e;
 	e.Create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 300, 100, 200, 25);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	
 	return 0;
 }
 
@@ -48,14 +46,14 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
-			// TODO: close main window
+			
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "This is dialog with text", "About", MB_OK);
-			// TODO: show dialog with text
+			
 			break;
 		case IDC_ADD:
-			char word[10];
+			char word[100];
 
 			GetDlgItemText(*this, IDC_EDIT, word, sizeof(word));
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)word);
@@ -63,9 +61,6 @@ void MainWindow::OnCommand(int id){
 			SetDlgItemText(*this, IDC_EDIT, "");
 				
 			
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
 			int ind = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
@@ -75,9 +70,7 @@ void MainWindow::OnCommand(int id){
 				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL))
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			
 			break;
 	}
 }
