@@ -31,7 +31,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 170, 50, 100, 25);
 	button_1.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 170, 80, 100, 25);
 	button_2.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "REMOVE", IDC_REMOVE, 170, 110, 100, 25);
-	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+	
 	return 0;
 }
 
@@ -40,7 +40,7 @@ void MainWindow::OnCommand(int id){
 	
 
 	switch(id){
-		char text[100];
+		
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
 			break;
@@ -48,6 +48,7 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Druga vjezba", "Pomoc", MB_OK);
 			break;
 		case IDC_ADD:
+			char text[100];
 			if (GetDlgItemText(*this, IDC_EDIT,text, sizeof(text)) != 0) {
 				SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)text);  
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
