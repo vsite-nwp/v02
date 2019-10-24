@@ -1,8 +1,18 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Edit : public Window {
+protected:
+	std::string ClassName()override { return "edit"; }
+};
+class ListBox : public Window {
+protected:
+	std::string ClassName()override { return "listBox"; }
+};
+class Button : public Window {
+protected:
+	std::string ClassName()override { return "button"; }
+};
 
 class MainWindow : public Window
 {
@@ -14,28 +24,43 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	ListBox LBox;
+	Edit edit;
+	Button button_1, button_2;
+	LBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 50, 50, 100, 120);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 170, 50, 100, 25);
+	button_1.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 170, 80, 100, 25);
+	button_2.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "REMOVE", IDC_REMOVE, 170, 110, 100, 25);
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
+	LRESULT sel;
+	char text[100];
+
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Druga vjezba", "Pomoc", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			if (GetDlgItemText(*this, IDC_EDIT,text, sizeof(text)) != 0) {
+				SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)text);  
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+				SetDlgItemText(*this, IDC_EDIT, "");       
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (itemIndex == LB_ERR)
+				break;
+			else
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, 0);
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0) == 0)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
@@ -49,7 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
 	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
-	// set icons
+	
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
 	HICON his = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
