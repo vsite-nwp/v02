@@ -36,10 +36,11 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
-	LRESULT sel;
-	char text[100];
+	
+	
 
 	switch(id){
+		char text[100];
 		case ID_FILE_EXIT:
 			PostQuitMessage(0);
 			break;
@@ -59,7 +60,7 @@ void MainWindow::OnCommand(int id){
 				break;
 			else
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, 0);
-			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0) == 0)
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
