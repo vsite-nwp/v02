@@ -30,14 +30,14 @@ protected:
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	Button add, remove;
-	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 130, 40, 100, 25);
-	remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 130, 70, 100, 25);
+	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 240, 40, 150, 25);
+	remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 240, 70, 150, 25);
 
 	Edit edit;
-	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 130, 10, 100, 25);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, "", IDC_EDIT, 240, 10, 150, 25);
 
 	ListBox listbox;
-	listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 110, 100);
+	listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 220, 150);
 	
 	return 0;
 }
@@ -53,20 +53,22 @@ void MainWindow::OnCommand(int id)
 			MessageBox(*this, "Puno zuji, malo meda daje...", "O Programu", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			char editText[16];
+			char editText[21];
 			if (GetDlgItemText(*this, IDC_EDIT, editText, sizeof(editText)))
 			{
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)editText);
 				SetDlgItemText(*this, IDC_EDIT, "");
 				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
-			}
-			
+			}			
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int selectedIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (selectedIndex == LB_ERR)
+				return;
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, selectedIndex, 0);
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
