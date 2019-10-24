@@ -1,8 +1,24 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Button : public Window
+{
+public:
+	std::string ClassName() { return "BUTTON"; }
+};
+
+class Edit : public Window
+{
+public:
+	std::string ClassName() { return "EDIT"; }
+};
+
+class ListBox : public Window
+{
+public:
+	std::string ClassName() { return "LISTBOX"; }
+};
+
 
 class MainWindow : public Window
 {
@@ -14,7 +30,21 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
+	
+	Button b, c;
+	//b.Create(pcs->hwndParent,pcs->dwExStyle, pcs->lpszName, pcs->style, pcs->cx, pcs->cy, pcs->x, pcs->y);
+	b.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150 , 90 , 120, 30);
+	c.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150 , 130, 120, 30);
+
+	Edit e;
+	e.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 150, 30, 120, 30);
+
+	ListBox lb;
+	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 30, 30, 50, 50);
+
+	
+
+
 	// TODO: disable "Remove" button
 	return 0;
 }
