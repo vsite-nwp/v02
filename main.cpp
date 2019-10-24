@@ -37,7 +37,8 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs) {
 
 void MainWindow::OnAdd() {
 	char buffer[30];
-	GetDlgItemText(*this, IDC_EDIT, buffer, 30);
+	if (!GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer)))
+		return;
 	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
 	if (result != LB_ERR) {
 		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
@@ -46,9 +47,9 @@ void MainWindow::OnAdd() {
 }
 
 void MainWindow::OnRemove() {
-	LRESULT result = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)"");
-	if (result != LB_ERR) {
-		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (LPARAM)result, 0);
+	LRESULT cursel = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)"");
+	if (cursel != LB_ERR) {
+		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (LPARAM)cursel, 0);
 		LRESULT count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 		if (count == 0) {
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
