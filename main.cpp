@@ -26,12 +26,12 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
 	ListBox LBox;
 	Edit edit;
-	Button button_1, button_2;
+	Button addButton, removeButton;
 	LBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 50, 50, 100, 120);
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 170, 50, 100, 25);
-	button_1.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 170, 80, 100, 25);
-	button_2.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "REMOVE", IDC_REMOVE, 170, 110, 100, 25);
-	
+	addButton.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 170, 80, 100, 25);
+	removeButton.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "REMOVE", IDC_REMOVE, 170, 110, 100, 25);
+	EnableWindow(removeButton, false);
 	return 0;
 }
 
