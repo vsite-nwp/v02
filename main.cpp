@@ -1,8 +1,29 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Edit : public Window
+{
+protected:
+	std::string ClassName() {
+		return "EDIT";
+	};
+};
+
+class Button : public Window
+{
+protected:
+	std::string ClassName() {
+		return "BUTTON";
+	};
+};
+
+class ListBox : public Window
+{
+protected:
+	std::string ClassName() {
+		return "LISTBOX";
+	};
+};
 
 class MainWindow : public Window
 {
@@ -10,11 +31,22 @@ protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+	void onExit();
+	void onAbout();
+	void onAdd();
+	void onRemove();
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
+	Button add, remove;
+	Edit edit;
+	ListBox listBox;
+	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 300, 120, 100, 40);
+	remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 300, 190, 100, 40);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "I am text!", IDC_EDIT, 300, 50, 100, 40);
+	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "List Box", IDC_LB,  50, 50, 200, 180);
+
 	// TODO: disable "Remove" button
 	return 0;
 }
@@ -22,26 +54,51 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			onExit();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			onAbout();
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			onAdd();
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			onRemove();
 			break;
 	}
 }
 
-void MainWindow::OnDestroy(){
+void MainWindow::OnDestroy() {
 	::PostQuitMessage(0);
+}
+
+void MainWindow::onExit() {
+	if (MessageBox((HWND)*this, "Dont go!! Are you leaving?", "My second app", MB_YESNO) == IDYES)
+	{
+		DestroyWindow((HWND)*this);
+	}
+}
+
+void MainWindow::onAbout() {
+	MessageBox((HWND)*this, "I'm helping. Very helpful!", "About", MB_OK);
+}
+
+void MainWindow::onAdd() {
+	char str[32];
+	if (GetDlgItemText(*this, IDC_EDIT, str, sizeof(str))) {
+		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)str);
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+		SetDlgItemText(*this, IDC_EDIT, "");
+	}
+}
+
+void MainWindow::onRemove() {
+	long res = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+	if (res != LB_ERR) {
+		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)res, 0);
+		if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+	}
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
