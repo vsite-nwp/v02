@@ -46,8 +46,6 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	remove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 300, 190, 100, 40);
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "I am text!", IDC_EDIT, 300, 50, 100, 40);
 	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "List Box", IDC_LB,  50, 50, 200, 180);
-
-	// TODO: disable "Remove" button
 	return 0;
 }
 
@@ -73,14 +71,14 @@ void MainWindow::OnDestroy() {
 }
 
 void MainWindow::onExit() {
-	if (MessageBox((HWND)*this, "Dont go!! Are you leaving?", "My second app", MB_YESNO) == IDYES)
+	if (MessageBox(*this, "Dont go!! Are you leaving?", "My second app", MB_YESNO) == IDYES)
 	{
-		DestroyWindow((HWND)*this);
+		DestroyWindow(*this);
 	}
 }
 
 void MainWindow::onAbout() {
-	MessageBox((HWND)*this, "I'm helping. Very helpful!", "About", MB_OK);
+	MessageBox(*this, "I'm helping. Very helpful!", "About", MB_OK);
 }
 
 void MainWindow::onAdd() {
