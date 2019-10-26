@@ -55,8 +55,11 @@ void MainWindow::OnCommand(int id){
 			MessageBox(*this, "Poruka", "About", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
+			char EntryText[20];
+			if (GetDlgItemText(*this, IDC_EDIT, EntryText, sizeof(EntryText))) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)EntryText);
+			}
+			SetDlgItemText(*this, IDC_EDIT, "");
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
