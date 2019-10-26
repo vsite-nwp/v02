@@ -1,9 +1,7 @@
 ﻿#include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
-//done i hopeˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+
 class Button :public Window {
 public:
 	std::string ClassName() { return "BUTTON"; }
@@ -27,39 +25,48 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	Button b1,b2;
+	Button b1, b2;
 	ListBox lb1;
 	Edit e1;
-	e1.Create(*this, WS_CHILD | WS_VISIBLE|WS_BORDER, "Input", IDC_EDIT, 200, 50, 100, 40);
+	e1.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Input", IDC_EDIT, 200, 50, 100, 40);
 	b1.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 100, 100, 40);
-	b1.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 150,100, 40);
-	lb1.Create(*this, WS_CHILD |WS_VISIBLE| WS_CAPTION, "List", IDC_LB, 100, 50, 100, 200);
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	b1.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 150, 100, 40);
+	lb1.Create(*this, WS_CHILD | WS_VISIBLE | WS_CAPTION, "List", IDC_LB, 100, 50, 100, 200);
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	return 0;
 }
 
-void MainWindow::OnCommand(int id){
-	switch(id){
-		case ID_FILE_EXIT:
-			// TODO: close main window
+void MainWindow::OnCommand(int id) {
+	switch (id) {
+	case ID_FILE_EXIT:
+		if(MessageBox(*this, "Are you sure?", "Exit?", MB_YESNO| MB_ICONQUESTION)== IDYES) {
+			SendMessage(*this, WM_CLOSE, NULL, NULL);
+		}
+		break;
+	case ID_HELP_ABOUT:
+		MessageBox(*this, "About this program", "About", MB_OK| MB_ICONINFORMATION);
+		break;
+	case IDC_ADD:
+		char stringy[100];
+		if (GetDlgItemTextA(*this, IDC_EDIT, stringy, 100) != 0) {
+			SendDlgItemMessageA(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)stringy);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+		}
+		break;
+	case IDC_REMOVE:
+		LRESULT handleitem = SendDlgItemMessageA(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+		if (handleitem == LB_ERR) {
+			MessageBox(*this, "No item selected", "Silly goose", MB_RIGHT);
 			break;
-		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
-			break;
-		case IDC_ADD:
-			LPSTR stringy;
-			GetDlgItemTextA(*this, id, stringy, 100);
-			SendDlgItemMessageA(*this,IDC_LB,)
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
-			break;
-		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
-			break;
+		}
+		else
+		{
+			SendDlgItemMessageA(*this, IDC_LB, LB_DELETESTRING, handleitem, NULL);
+			if (SendDlgItemMessageA(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0){
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
+		}
+		break;
 	}
 }
 
