@@ -3,7 +3,7 @@
 
 class Button : public Window
 {
-private:
+protected:
 	std::string ClassName()
 	{
 		return "Button";
@@ -12,7 +12,7 @@ private:
 
 class Edit : public Window
 {
-private:
+protected:
 	std::string ClassName()
 	{
 		return "Edit";
@@ -21,7 +21,7 @@ private:
 
 class ListBox : public Window
 {
-private:
+protected:
 	std::string ClassName()
 	{
 		return "ListBox";
@@ -74,7 +74,7 @@ void MainWindow::OnCommand(int id){
 
 void MainWindow::onAbout() 
 {
-	MessageBox((HWND)* this, "GUI program with buttons!! \n !Patent Pending!", "About", MB_OK | MB_ICONINFORMATION);
+	MessageBox(*this, "GUI program with buttons!! \n !Patent Pending!", "About", MB_OK | MB_ICONINFORMATION);
 }
 
 void MainWindow::onExit() 
@@ -100,7 +100,7 @@ void MainWindow::onRemove()
 {
 	long res = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 	if (res != LB_ERR) {
-		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)res, 0);
+		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, static_cast<WPARAM>(res), 0);
 		if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	}
