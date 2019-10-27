@@ -63,8 +63,9 @@ void MainWindow::OnCommand(int id){
 			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
+			LRESULT Selection = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (Selection != LB_ERR)
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, Selection, 0);
 			// TODO: disable "Remove" button if listbox is empty
 			break;
 	}
