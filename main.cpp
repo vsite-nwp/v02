@@ -1,8 +1,28 @@
 #include "nwpwin.h"
 #include "res.h"
+#include <sstream>
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Edit : public Window
+{
+	std::string ClassName() {
+		return "Edit";
+	}
+};
+
+class Button : public Window
+{
+	std::string ClassName() {
+		return "Button";
+	}
+};
+
+class ListBox : public Window
+{
+	std::string ClassName() {
+		return "ListBox";
+	}
+};
+
 
 class MainWindow : public Window
 {
@@ -14,35 +34,56 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Button b1,b2;
+	b1.Create(*this,WS_CHILD|WS_VISIBLE,"Add",IDC_ADD,400,200,60,50);
+	b2.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 400, 260, 60, 50);
+
+	Edit e;
+	e.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE |ES_AUTOHSCROLL, "", IDC_EDIT, 300,260, 40, 50);
+	ListBox l;
+	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY,"", IDC_LB, 300, 200, 100, 50);
+
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
+
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Vjezba 2 NWP", "About", MB_OK | MB_ICONINFORMATION);
 			break;
+
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+
+			char text[50];
+			if (GetDlgItemText(*this, IDC_EDIT, text, sizeof(text)))
+			{
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
 			break;
+
+
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int place = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (place == LB_ERR)
+				return;
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, place, 0);
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
 
-void MainWindow::OnDestroy(){
-	::PostQuitMessage(0);
-}
+	void MainWindow::OnDestroy()
+	{
+		::PostQuitMessage(0);
+	}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
