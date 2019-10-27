@@ -42,8 +42,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	EntryBox.Create(*this, WS_CHILD | WS_VISIBLE, 0, IDC_EDIT, 140, 20, 80, 20);
 	AddButton.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 140, 60, 80, 20);
 	RemoveButton.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 140, 100, 80, 20);
-
-	// TODO: disable "Remove" button
+	EnableWindow(RemoveButton, FALSE);
 	return 0;
 }
 
@@ -59,15 +58,17 @@ void MainWindow::OnCommand(int id){
 			char EntryText[20];
 			if (GetDlgItemText(*this, IDC_EDIT, EntryText, sizeof(EntryText))) {
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)EntryText);
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), TRUE);
 			}
 			SetDlgItemText(*this, IDC_EDIT, "");
-			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
 			LRESULT Selection = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-			if (Selection != LB_ERR)
+			if (Selection != LB_ERR) {
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, Selection, 0);
-			// TODO: disable "Remove" button if listbox is empty
+				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), FALSE);
+			}
 			break;
 	}
 }
