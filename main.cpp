@@ -9,6 +9,7 @@ class Edit : public Window
 	}
 };
 
+
 class Button : public Window
 {
 	std::string ClassName() {
