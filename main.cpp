@@ -42,6 +42,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	EntryBox.Create(*this, WS_CHILD | WS_VISIBLE, 0, IDC_EDIT, 140, 20, 80, 20);
 	AddButton.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 140, 60, 80, 20);
 	RemoveButton.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 140, 100, 80, 20);
+
 	// TODO: disable "Remove" button
 	return 0;
 }
