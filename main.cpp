@@ -40,8 +40,7 @@ void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_FILE_EXIT:
 		if(MessageBox(*this, "Are you sure?", "Exit?", MB_YESNO| MB_ICONQUESTION)== IDYES) {
-			CloseWindow(*this);
-			OnDestroy();
+			DestroyWindow(*this);
 		}
 		break;
 	case ID_HELP_ABOUT:
@@ -49,7 +48,7 @@ void MainWindow::OnCommand(int id) {
 		break;
 	case IDC_ADD:
 		char stringy[100];
-		if (GetDlgItemTextA(*this, IDC_EDIT, stringy, sizeof(stringy)) != 0) {
+		if (GetDlgItemText(*this, IDC_EDIT, stringy, sizeof(stringy)) != 0) {
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)stringy);
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 		}
