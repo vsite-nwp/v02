@@ -59,7 +59,7 @@ void MainWindow::OnCommand(int id){
 			::EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			LRESULT izabrano = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			LRESULT izabrano = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (izabrano == LB_ERR)
 				break;
 			else
