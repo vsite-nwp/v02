@@ -4,7 +4,7 @@
 
 class Edit : public Window
 {
-	std::string ClassName() {
+public: std::string ClassName() {
 		return "Edit";
 	}
 };
@@ -12,14 +12,14 @@ class Edit : public Window
 
 class Button : public Window
 {
-	std::string ClassName() {
+public: std::string ClassName() {
 		return "Button";
 	}
 };
 
 class ListBox : public Window
 {
-	std::string ClassName() {
+public: std::string ClassName() {
 		return "ListBox";
 	}
 };
@@ -43,7 +43,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	e.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE |ES_AUTOHSCROLL, "", IDC_EDIT, 300,260, 40, 50);
 	ListBox l;
 	l.Create(*this, WS_VISIBLE | WS_CHILD | LBS_STANDARD | LBS_NOTIFY,"", IDC_LB, 300, 200, 100, 50);
-
+	EnableWindow(b2, FALSE);
 	return 0;
 }
 
@@ -64,8 +64,8 @@ void MainWindow::OnCommand(int id){
 			{
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 				SetDlgItemText(*this, IDC_EDIT, "");
-				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
-					EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+				
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			}
 			break;
 
