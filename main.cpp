@@ -54,24 +54,25 @@ void MainWindow::OnCommand(int id){
 		case ID_FILE_EXIT:
 			DestroyWindow(*this);
 			break;
+
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "Some msg", "About", MB_OK);
 			break;
+
 		case IDC_ADD:
 			
 			char TextBox_Text[30];
 			if (GetDlgItemText(*this, IDC_EDIT, TextBox_Text, sizeof(TextBox_Text)))
 			{
+
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)TextBox_Text);
-				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) > 0)
-				{
-					EnableWindow(GetDlgItem(*this, IDC_REMOVE), TRUE);
-
-				}
-
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), TRUE);
 			}
+
 			SetDlgItemText(*this, IDC_EDIT, "");
+
 			break;
+
 		case IDC_REMOVE:
 			LRESULT selected = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 
