@@ -40,7 +40,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Listbox list;
 	
 	add_b.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 20, 45, 120, 30);
-	rem_b.Create(*this, WS_CHILD | WS_VISIBLE , "Remove", IDC_REMOVE, 20, 80, 120, 30);
+	rem_b.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED , "Remove", IDC_REMOVE, 20, 80, 120, 30);
 	edi.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 20, 10, 120, 30);
 	list.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 160, 10, 250, 140);
 	return 0;
@@ -61,7 +61,7 @@ void MainWindow::OnRemove() {
 	if (Index != LB_ERR)
 	{
 		SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, Index, NULL);
-		if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL) == 0)
+		if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0)
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	}
 }
