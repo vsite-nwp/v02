@@ -1,8 +1,23 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+
+class Edit : public Window {
+public:
+	std::string ClassName() { return "EDIT"; }
+};
+
+class Button : public Window {
+public:
+	std::string ClassName() { return "BUTTON"; }
+};
+
+class ListBox : public Window {
+public:
+	std::string ClassName() { return "LISTBOX"; }
+};
+
+
 
 class MainWindow : public Window
 {
@@ -14,28 +29,43 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Button add;
+	Button remove;
+	Edit edit;
+	ListBox listBox;
+
+	add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 200, 100, 50);
+	remove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 200, 300, 100, 50);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE, "Edit", IDC_EDIT, 200, 10, 100, 50);
+	listBox.Create(*this, WS_CHILD | WS_VISIBLE, "ListBox", IDC_LB, 10, 10, 75, 400);
+
+	::EnableWindow(remove, false);
+
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			this->OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "About", "Vjezba 2", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char tekst[11];
+			GetDlgItemText(*this, IDC_EDIT, tekst, sizeof(tekst));		// ?
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)tekst);
+			::EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			LRESULT izabrano = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (izabrano == LB_ERR)
+				break;
+			else
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, izabrano, 0);
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0)	
+				::EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
