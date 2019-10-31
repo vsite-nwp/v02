@@ -43,22 +43,30 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 }
 
 void MainWindow::OnCommand(int id){
+	char item[50];
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			PostQuitMessage(0);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "NWPL2", "About", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			if (GetDlgItemText(*this, IDC_EDIT, item, sizeof(item) != 0)) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)item);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			HWND lb = GetDlgItem(*this, IDC_LB);
+			int index = SendMessage(lb, LB_GETCURSEL, NULL, NULL);
+			if (index != LB_ERR) {
+				SendMessage(lb, LB_DELETESTRING, index, NULL);
+			}
+			if (SendMessage(lb, LB_GETCOUNT, NULL, NULL) == 0) {
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
 			break;
 	}
 }
