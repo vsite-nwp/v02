@@ -1,8 +1,18 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+class Button : public Window {
+public:
+	std::string ClassName() { return "Button"; }
+};
+class Edit :public Window {
+public:
+	std::string ClassName() { return "Edit"; }
+};
+class ListBox : public Window {
+public:
+	std::string ClassName() { return "Listbox"; }
+};
 
 class MainWindow : public Window
 {
@@ -10,32 +20,46 @@ protected:
 	int OnCreate(CREATESTRUCT* pcs);
 	void OnCommand(int id);
 	void OnDestroy();
+
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Button buttonAdd, buttonRemove;
+	buttonAdd.Create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 125, 50, 100, 40);
+	buttonRemove.Create(*this, WS_CHILD | WS_VISIBLE, "REMOVE", IDC_REMOVE, 125, 80, 100, 40);
+	Edit e;
+	e.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, "", IDC_EDIT, 125, 10, 100, 40);
+	ListBox lb;
+	lb.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 10, 10, 100, 100);
+	EnableWindow(buttonRemove, false);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "Vjezba 2", "About", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char tekst[50];
+			if (GetDlgItemText(*this, IDC_EDIT, tekst, sizeof(tekst))) {
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)tekst);
+				SetDlgItemText(*this, IDC_EDIT, "");
+				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			int place = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (place == LB_ERR)
+				return;
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, place, 0);
+			if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
