@@ -54,8 +54,11 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_REMOVE:
 			LRESULT rem = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-			LRESULT count = SendMessage(*this, LB_GETCOUNT, 0, 0);
+			if (rem != LB_ERR)
+			{
 			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)rem, 0);
+			}
+			LRESULT count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 			if (!count)
 			{
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false); //disable remove button
