@@ -30,10 +30,10 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button addbtn, removebtn;
 	ListBox lbox;
 	
-	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 50, 100, 30);
-	addbtn.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 90, 100, 50);
-	removebtn.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 200, 150, 100, 50);
-	lbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 45, 50, 150, 150);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 197, 50, 100, 30);
+	addbtn.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 197, 82, 100, 50);
+	removebtn.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 197, 133, 100, 50);
+	lbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 45, 50, 150, 140);
 
 	return 0;
 }
@@ -49,13 +49,17 @@ void MainWindow::OnCommand(int id){
 		case IDC_ADD:
 			char str[255];
 			GetDlgItemText(*this, IDC_EDIT, str, sizeof(str));
-			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)str);
-			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)str);
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true); //enable remove button 
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			LRESULT rem = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			LRESULT count = SendMessage(*this, LB_GETCOUNT, 0, 0);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)rem, 0);
+			if (!count)
+			{
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false); //disable remove button
+			}
 			break;
 	}
 }
