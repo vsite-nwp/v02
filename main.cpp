@@ -24,7 +24,6 @@ protected:
 	void OnDestroy();
 	void OnAdd( char* str);
 	void OnRemove(int id);
-	void AddItem(const char* nameOfItem);
 };
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
