@@ -56,7 +56,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			DestroyWindow((HWND)id);
+			DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "About window opened", "About", MB_OK);
