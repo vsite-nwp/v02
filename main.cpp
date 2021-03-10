@@ -3,6 +3,9 @@
 
 // TODO: prepare classes (Edit, Button, ListBox) for child windows
 // TODO: derive from Window, override ClassName
+class Edit: public Window{ std::string ClassName() { return "edit"; }};
+class Button : public Window { std::string ClassName() { return "button"; } };
+class ListBox : public Window { std::string ClassName() { return "listbox"; } };
 
 class MainWindow : public Window
 {
@@ -14,28 +17,37 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	
+	Edit editWindow;
+	editWindow.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 100, 100, 25);
+	
+	Button addButton, removeButton;
+	addButton.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 300, 100, 100, 25);
+	removeButton.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 400, 100, 100, 25);
+
+	ListBox listBoxWindow;
+	listBoxWindow.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 300, 200, 200, 100);
 	return 0;
 }
 
 void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_FILE_EXIT:
-		// TODO: close main window
+		OnDestroy();
 		break;
 	case ID_HELP_ABOUT:
-		// TODO: show dialog with text
+		MessageBox(*this, "Drugi labos", "O cemu", MB_OK);
 		break;
 	case IDC_ADD:
-		// TODO: get text from edit control
-		// TODO: add string to listbox control
-		// TODO: enable "Remove" button
+		char buffer[50];
+		GetDlgItemText(*this, IDC_EDIT, buffer, WM_GETTEXTLENGTH);
+		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)buffer);
+		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 		break;
 	case IDC_REMOVE:
-		// TODO: get listbox selection
-		// TODO: if there is a selection, delete selected string
-		// TODO: disable "Remove" button if listbox is empty
+		int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+		if (index != LB_ERR) { SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, 0); }
+		if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0)){ EnableWindow(GetDlgItem(*this, IDC_REMOVE), false); }
 		break;
 	}
 }
