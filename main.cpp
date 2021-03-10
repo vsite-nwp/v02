@@ -1,12 +1,7 @@
 #include "nwpwin.h"
 #include "res.h"
 
-enum {
-	EDIT = 1,
-	LISTBOX = 2,
-	BTN_ADD = 3,
-	BTN_REMOVE = 4
-};
+
 class MainWindow : public Window
 {
 protected:
@@ -43,10 +38,10 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button buttonAdd;
 	Button buttonRemove;
 
-	listbox.Create(*this, WS_CHILD | WS_OVERLAPPED | WS_VISIBLE | WS_BORDER, NULL, LISTBOX, 20, 20, 120, 120);
-	edit.Create(*this, WS_BORDER | WS_OVERLAPPED | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, NULL, EDIT, 150, 20, 100, 25);
-	buttonAdd.Create(*this, WS_CHILD | WS_OVERLAPPED | WS_VISIBLE, "Add", IDC_ADD, 150, 70, 100, 30);
-	buttonRemove.Create(*this, WS_CHILD | WS_OVERLAPPED | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 105, 100, 30);
+	listbox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, NULL, IDC_LB, 20, 20, 120, 120);
+	edit.Create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, NULL, IDC_EDIT, 150, 20, 100, 25);
+	buttonAdd.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 70, 100, 30);
+	buttonRemove.Create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 105, 100, 30);
 
 	EnableWindow(buttonRemove, false);
 	
@@ -64,9 +59,9 @@ void MainWindow::OnCommand(int id){
 		case IDC_ADD:
 
 			char edit_text[30];
-			if (GetDlgItemText(*this, EDIT, edit_text, sizeof(edit_text))) {
-				SendDlgItemMessage(*this, LISTBOX, LB_ADDSTRING, NULL, (LPARAM)edit_text);
-				SetDlgItemText(*this, EDIT, "");
+			if (GetDlgItemText(*this, IDC_EDIT, edit_text, sizeof(edit_text))) {
+				SendDlgItemMessage(*this,IDC_LB, LB_ADDSTRING, NULL, (LPARAM)edit_text);
+				SetDlgItemText(*this, IDC_EDIT, "");
 				
 				HWND btnRemoveHandle = GetDlgItem(*this, IDC_REMOVE);
 				EnableWindow(btnRemoveHandle, true);
@@ -74,16 +69,16 @@ void MainWindow::OnCommand(int id){
 			break;
 		case IDC_REMOVE:
 
-			int selectedItemIndex = SendDlgItemMessage(*this, LISTBOX, LB_GETCURSEL, NULL, NULL);
-			SendDlgItemMessage(*this, LISTBOX, LB_DELETESTRING, selectedItemIndex, NULL);
+			int selectedItemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
+			if (selectedItemIndex == LB_ERR) break;
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, selectedItemIndex, NULL);
 
 			//Selects last item in listbox to make removing easier
-			long numberOfItems = SendDlgItemMessage(*this, LISTBOX, LB_GETCOUNT, NULL, NULL);
-			if (numberOfItems == LB_ERR) break;
-			SendDlgItemMessage(*this, LISTBOX, LB_SETCURSEL, numberOfItems - 1, NULL);
-
-			if (SendDlgItemMessage(*this, LISTBOX, LB_GETCOUNT, NULL, NULL) == 0) EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-			break;
+			long numberOfItems = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL);
+			if (SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, numberOfItems - 1, NULL) == LB_ERR) {
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+				break;
+			}
 	}
 }
 
