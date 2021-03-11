@@ -25,6 +25,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 
 	ListBox listBoxWindow;
 	listBoxWindow.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 300, 200, 200, 100);
+	EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 	return 0;
 }
 
@@ -38,7 +39,7 @@ void MainWindow::OnCommand(int id) {
 		break;
 	case IDC_ADD:
 		char buffer[50];
-		GetDlgItemText(*this, IDC_EDIT, buffer, WM_GETTEXTLENGTH);
+		GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer));
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)buffer);
 		EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 		break;
