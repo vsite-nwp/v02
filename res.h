@@ -3,6 +3,9 @@
 #define IDC_EDIT 103
 #define IDC_LB 104
 
+#define IDC_ADD_TXT "Add"
+#define IDC_REMOVE_TXT "Remove"
+
 #define IDI_V2 201
 
 #define IDM_V2			400

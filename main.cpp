@@ -1,8 +1,19 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+
+class Edit : public Window {
+	std::string ClassName() override { return "Edit"; }
+};
+
+class Button : public Window {
+	std::string ClassName() override { return "Button"; }
+};
+
+class ListBox : public Window {
+	std::string ClassName() override { return "ListBox"; }
+};
+
 
 class MainWindow : public Window
 {
@@ -14,28 +25,45 @@ protected:
 
 int MainWindow::OnCreate(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	Edit edit;
+	Button buttonAdd, buttonRemove;
+	ListBox listBox;
+
+	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,  "", IDC_LB, 20, 20, 150, 200);
+	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,  "", IDC_EDIT, 180, 20, 150, 50);
+	buttonAdd.Create(*this, WS_CHILD | WS_VISIBLE, IDC_ADD_TXT, IDC_ADD, 180, 80, 150, 50);
+	buttonRemove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, IDC_REMOVE_TXT, IDC_REMOVE, 180, 140, 150, 50);
+
 	return 0;
 }
 
 void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			OnDestroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			MessageBox(*this, "NWP 2. VJEZBA", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			char s[128];
+			GetDlgItemText(*this, IDC_EDIT, s, sizeof(s));		
+
+			if (s[0] != 0)						
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)s);
+			SetDlgItemTextA(*this, IDC_EDIT, "");
+
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+			
 			break;
-		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+		case IDC_REMOVE:			
+			LRESULT iIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (iIndex != LB_ERR)
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, iIndex, NULL);
+
+			int iCount = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+			if (iCount == 0)
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			break;
 	}
 }
@@ -44,11 +72,12 @@ void MainWindow::OnDestroy(){
 	::PostQuitMessage(0);
 }
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
 	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu, CW_USEDEFAULT, CW_USEDEFAULT, 400, 320);
 	// set icons
 	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
