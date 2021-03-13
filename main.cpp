@@ -72,7 +72,7 @@ void MainWindow::OnCommand(int id){
 			LRESULT sel = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			
 			// LB_OKAY = 0; LB_ERR = -1; LB_ERRSPACE = -2 
-			if (!sel) {
+			if (sel != LB_ERR) {
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, sel, 0);
 				if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0)
 				{
