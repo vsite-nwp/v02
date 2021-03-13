@@ -29,10 +29,16 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	Button buttonAdd, buttonRemove;
 	ListBox listBox;
 
+	char s[128];
+
 	listBox.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,  "", IDC_LB, 20, 20, 150, 200);
 	edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,  "", IDC_EDIT, 180, 20, 150, 50);
-	buttonAdd.Create(*this, WS_CHILD | WS_VISIBLE, IDC_ADD_TXT, IDC_ADD, 180, 80, 150, 50);
-	buttonRemove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, IDC_REMOVE_TXT, IDC_REMOVE, 180, 140, 150, 50);
+	
+	LoadString(0, IDS_BUTTON_ADD, s, sizeof s);
+	buttonAdd.Create(*this, WS_CHILD | WS_VISIBLE, s, IDC_ADD, 180, 80, 150, 50);
+
+	LoadString(0, IDS_BUTTON_REMOVE, s, sizeof s);
+	buttonRemove.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, s, IDC_REMOVE, 180, 140, 150, 50);
 
 	return 0;
 }

@@ -3,8 +3,8 @@
 #define IDC_EDIT 103
 #define IDC_LB 104
 
-#define IDC_ADD_TXT "Add"
-#define IDC_REMOVE_TXT "Remove"
+#define IDS_BUTTON_ADD 300
+#define IDS_BUTTON_REMOVE 301
 
 #define IDI_V2 201
 
