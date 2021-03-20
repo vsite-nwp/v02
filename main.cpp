@@ -48,9 +48,7 @@ int MainWindow::OnCreate(CREATESTRUCT* pcs)
 	
 	return 0;
 }
-class CListBox : public Window {
 
-};
 
 void MainWindow::OnCommand(int id){
 	switch(id){
@@ -61,7 +59,8 @@ void MainWindow::OnCommand(int id){
 		}
 		case ID_HELP_ABOUT:
 		{
-			Proc(*this, ID_HELP_ABOUT, 0, 0);
+			
+			MessageBox(*this, "Help", "HELP", ID_HELP_ABOUT);
 			break;
 		}
 		case IDC_ADD:
@@ -69,6 +68,7 @@ void MainWindow::OnCommand(int id){
 			char buffer[100];
 			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer));
 
+			if(buffer!=" ")
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
 			
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
@@ -79,9 +79,10 @@ void MainWindow::OnCommand(int id){
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			
 			if(index!=LB_ERR)
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, 0, index);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, 0);
 			
-			if (index == LB_ERR) {
+			
+			if (LB_GETCOUNT==0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
 			break;
