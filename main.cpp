@@ -65,24 +65,30 @@ void MainWindow::OnCommand(int id){
 		}
 		case IDC_ADD:
 		{
+			
 			char buffer[100];
 			GetDlgItemText(*this, IDC_EDIT, buffer, sizeof(buffer));
+			
 
-			if(buffer!=" ")
+			if(buffer[0]!=0)
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)buffer);
+
+			SetDlgItemTextA(*this, IDC_EDIT, "");
+			
 			
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		}
 		case IDC_REMOVE:
 		{
-			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			LRESULT index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			
 			if(index!=LB_ERR)
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, 0);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
 			
+			LRESULT count = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 			
-			if (LB_GETCOUNT==0) {
+			if (!count) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
 			break;
