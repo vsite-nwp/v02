@@ -1,25 +1,25 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (Edit, Button, ListBox) for child windows
-// TODO: derive from Window, override ClassName
+// TODO: prepare classes (edit, button, list_box) for child windows
+// TODO: derive from window, override class_name
 
-class MainWindow : public Window
+class main_window : public vsite::nwp::window
 {
 protected:
-	int OnCreate(CREATESTRUCT* pcs);
-	void OnCommand(int id);
-	void OnDestroy();
+	int on_create(CREATESTRUCT* pcs) override;
+	void on_command(int id) override;
+	void on_destroy() override;
 };
 
-int MainWindow::OnCreate(CREATESTRUCT* pcs)
+int main_window::on_create(CREATESTRUCT* pcs)
 {
 	// TODO: create all child windows
 	// TODO: disable "Remove" button
 	return 0;
 }
 
-void MainWindow::OnCommand(int id){
+void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
@@ -40,21 +40,15 @@ void MainWindow::OnCommand(int id){
 	}
 }
 
-void MainWindow::OnDestroy(){
+void main_window::on_destroy(){
 	::PostQuitMessage(0);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
-	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
-	MainWindow wnd; 
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);	
-	// set icons
-	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
-	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
-	HICON his = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	PostMessage(wnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(his));
-
-	Application app; 
-	return app.Run();
+	main_window w; 
+	w.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)::LoadMenu(instance, MAKEINTRESOURCE(IDM_V2)));
+	vsite::nwp::set_icons(instance, w, IDI_V2);
+	vsite::nwp::application app;
+	return app.run();
 }
