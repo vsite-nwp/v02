@@ -24,6 +24,7 @@ protected:
 	void on_destroy() override;
 };
 
+
 int main_window::on_create(CREATESTRUCT* pcs)
 {
 	ListBox listbox;
