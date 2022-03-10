@@ -34,10 +34,11 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	Edit edit;
 	button b1;
 	button remove;
-	b1.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 170, 170, 150, 20);
-	edit.create(*this, WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 170, 170, 150, 20);
+	listbox.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE | WS_VSCROLL, "", IDC_LB, 10, 10, 150, 120);
+	b1.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 170, 50, 150, 20);
+	edit.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 170, 10, 150, 20);
 	// TODO: disable "Remove" button
-	remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 170, 170, 150, 20);
+	remove.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 170, 80, 150, 20);
 	EnableWindow(GetDlgItem(*this, IDC_REMOVE ), false);
 	return 0;
 }
@@ -50,7 +51,7 @@ void main_window::on_command(int id){
 		break;
 	case ID_HELP_ABOUT:
 		// TODO: show dialog with text
-		MessageBox(*this, "Vjezba2", "About", MB_OK | MB_ICONINFORMATION);
+		MessageBox(*this, "NWP - Vjezba 2", "About", MB_OK | MB_ICONINFORMATION);
 		break;
 	case IDC_ADD:
 		char text[100];
@@ -64,8 +65,18 @@ void main_window::on_command(int id){
 		// TODO: enable "Remove" button
 		break;
 	case IDC_REMOVE:
+		int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+		if (index != LB_ERR) {
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, 0);
+		}
+		else {
+			break;
+		}
 		// TODO: get listbox selection
 		// TODO: if there is a selection, delete selected string
+		if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0) {
+			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+		}
 		// TODO: disable "Remove" button if listbox is empty
 		break;
 	}
