@@ -35,7 +35,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	b1.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 170, 50, 150, 20);
 	edit.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "", IDC_EDIT, 170, 10, 150, 20);
 	remove.create(*this, WS_BORDER | WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 170, 80, 150, 20);
-	EnableWindow(GetDlgItem(*this, IDC_REMOVE ), false);
+	EnableWindow(remove, false);
 	return 0;
 }
 
