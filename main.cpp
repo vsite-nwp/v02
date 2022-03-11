@@ -42,7 +42,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 void main_window::on_command(int id){
 	switch (id) {
 	case ID_FILE_EXIT:
-		PostQuitMessage(0);
+		on_destroy();
 		break;
 	case ID_HELP_ABOUT:
 		MessageBox(*this, "NWP - Vjezba 2", "About", MB_OK | MB_ICONINFORMATION);
@@ -50,7 +50,7 @@ void main_window::on_command(int id){
 	case IDC_ADD:
 		char text[100];
 		if (GetDlgItemText(*this, IDC_EDIT, text, sizeof(text)) != 0) {
-			SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, (LPARAM)text);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			SetDlgItemText(*this, IDC_EDIT, "");
 		}
