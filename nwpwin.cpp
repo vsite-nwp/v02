@@ -1,8 +1,6 @@
 #include "nwpwin.h"
 
-namespace vsite::nwp {
-
-int application::run()
+int Application::Run()
 {
 	MSG msg;
 	while (::GetMessage(&msg, NULL, 0, 0)) {
@@ -12,71 +10,64 @@ int application::run()
 	return msg.wParam;
 }
 
-std::string window::class_name()
+std::string Window::ClassName()
 {
 	return std::string();
 }
 
-bool window::register_class(const std::string& name)
+bool Window::Register(const std::string& name)
 {
-	WNDCLASS wc{};
-	wc.lpfnWndProc = proc;
+	WNDCLASS wc; ZeroMemory(&wc, sizeof wc);
+	wc.lpfnWndProc = Proc;
 	wc.lpszClassName = name.c_str();
-	wc.cbWndExtra = sizeof(window*);
+	wc.cbWndExtra = sizeof(Window*);
 
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
-	wc.hCursor = ::LoadCursor(0, IDC_ARROW);
-	wc.hbrBackground = static_cast<HBRUSH>(::GetStockObject(WHITE_BRUSH));
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 
-	return ::RegisterClass(&wc) != 0;
+	return RegisterClass(&wc) != 0;
 }
 
-std::string window::generate_class_name()
+std::string Window::GenerateClassName()
 {
-	static int n = 1;
-	return _T("NWP") + to_tstring(n++);
+	static int cnt = 1;
+	char s[16]; sprintf(s, "NWP%d", cnt++);
+	return std::string(s);
 }
 
-bool window::create(HWND parent, DWORD style, LPCTSTR caption, int id_or_menu,
+Window::Window() : hw(0) {}
+
+bool Window::Create(HWND parent, DWORD style, PCSTR caption, int IdOrMenu,
 	int x, int y, int width, int height)
 {
-	std::string cn = class_name();
+	std::string cn = ClassName();
 	if (cn.empty())
-		register_class(cn = generate_class_name());
-	hw = ::CreateWindow(cn.c_str(), caption, style, x, y, width, height, parent, (HMENU)id_or_menu, 0, this);
+		Register(cn = GenerateClassName());
+	hw = ::CreateWindow(cn.c_str(), caption, style, x, y, width, height, parent, (HMENU)IdOrMenu, 0, this);
 	return hw != 0;
 }
 
-window::operator HWND()
+Window::operator HWND()
 {
 	return hw;
 }
 
-LRESULT CALLBACK window::proc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
+LRESULT CALLBACK Window::Proc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (msg == WM_CREATE) {
-		CREATESTRUCT* pcs = reinterpret_cast<CREATESTRUCT*>(lp);
-		window* pw = reinterpret_cast<window*>(pcs->lpCreateParams);
-		::SetWindowLong(hw, 0, reinterpret_cast<long>(pw));
-		pw->hw = hw;
-		return pw->on_create(pcs);
+	if (message == WM_CREATE) {
+		CREATESTRUCT* pcs = reinterpret_cast<CREATESTRUCT*>(lParam);
+		Window* pw = reinterpret_cast<Window*>(pcs->lpCreateParams);
+		::SetWindowLong(hwnd, 0, reinterpret_cast<long>(pw));
+		pw->hw = hwnd;
+		return pw->OnCreate(pcs);
 	}
 
-	window* pw = reinterpret_cast<window*>(::GetWindowLong(hw, 0));
-	switch (msg)
+	Window* pThis = reinterpret_cast<Window*>(::GetWindowLong(hwnd, 0));
+	switch (message)
 	{
-		case WM_COMMAND: pw->on_command(LOWORD(wp)); return 0;
-		case WM_DESTROY: pw->on_destroy(); return 0;
+	case WM_COMMAND: pThis->OnCommand(LOWORD(wParam)); return 0;
+	case WM_DESTROY: pThis->OnDestroy(); return 0;
 	}
-	return ::DefWindowProc(hw, msg, wp, lp);
+	return ::DefWindowProc(hwnd, message, wParam, lParam);
 }
-
-void set_icons(HINSTANCE instance, HWND window, int icon_id)
-{
-	HICON hib = (HICON)::LoadImage(instance, MAKEINTRESOURCE(icon_id), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
-	::PostMessage(window, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
-	HICON his = (HICON)::LoadImage(instance, MAKEINTRESOURCE(icon_id), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	::PostMessage(window, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(his));
-}
-
-} // namespace
