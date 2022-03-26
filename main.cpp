@@ -63,7 +63,7 @@ void main_window::on_command(int id){
 
 			if (s[0] != 0)
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)s);
-			SetDlgItemTextA(*this, IDC_EDIT, "");
+			SetDlgItemText(*this, IDC_EDIT, "");
 
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
