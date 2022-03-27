@@ -1,45 +1,43 @@
 #include "nwpwin.h"
 #include "res.h"
-
-class Button : public Window {
-public:
-	std::string ClassName() override { return "BUTTON"; }
+class Button : public vsite::nwp::window {
+	std::string class_name() override { return "Button"; }
+};
+class ListBox : public vsite::nwp::window {
+	std::string class_name() override { return "ListBox"; }
 };
 
-class ListBox : public Window {
-public:
-	std::string ClassName() override { return "LISTBOX"; }
+class Edit : public vsite::nwp::window {
+	std::string class_name() override { return "Edit"; }
 };
 
-class Edit : public Window {
-public:
-	std::string ClassName() override { return "EDIT"; }
-};
-
-class MainWindow : public Window
+class main_window : public vsite::nwp::window
 {
 protected:
-	int OnCreate(CREATESTRUCT* pcs);
-	void OnCommand(int id);
-	void OnDestroy();
+	int on_create(CREATESTRUCT* pcs) override;
+	void on_command(int id) override;
+	void on_destroy() override;
 };
 
-int MainWindow::OnCreate(CREATESTRUCT* pcs)
+int main_window::on_create(CREATESTRUCT* pcs)
 {
-	Button rem; rem.Create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 200, 150, 100, 30);
-	Button add; add.Create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 100, 100, 30);
-	Edit edit; edit.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 50, 100, 30);
-	ListBox lbx; lbx.Create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 50, 50, 100, 150);
+	Button rem; rem.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 200, 150, 100, 30);
+	Button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 200, 100, 100, 30);
+	Edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 200, 50, 100, 30);
+	ListBox lbx; lbx.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 50, 50, 100, 150);
 
 	return 0;
+	
 }
 
-void MainWindow::OnCommand(int id) {
+void main_window::on_command(int id) {
 	switch (id) {
 	case ID_FILE_EXIT:
-		DestroyWindow(*this);
+		
+		on_destroy();
 		break;
 	case ID_HELP_ABOUT:
+		
 		MessageBox(*this, "Very important: \n Using same thing...", "Help", MB_OK | MB_ICONINFORMATION);
 		break;
 	case IDC_ADD:
@@ -52,41 +50,27 @@ void MainWindow::OnCommand(int id) {
 
 		break;
 	case IDC_REMOVE:
-		int itemIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, NULL, NULL);
-		if (itemIndex == LB_ERR)
-		{
-			MessageBox(*this, "Please select item from the list!", "Hm...", MB_OK | MB_ICONEXCLAMATION);
-			break;
-		}
-		else
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, itemIndex, NULL);
+		
+		LRESULT iIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+		if (iIndex != LB_ERR)
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, iIndex, NULL);
 
-		if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, NULL, NULL) == 0)
+		int iCount = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+		if (iCount == 0)
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-		else
-		{
-			
-			SendDlgItemMessage(*this, IDC_LB, LB_SETCURSEL, max(0, itemIndex - 1), NULL);  
-		}
 		break;
 	}
 }
 
-void MainWindow::OnDestroy() {
+void main_window::on_destroy() {
 	::PostQuitMessage(0);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
-	HMENU hMenu = LoadMenu(hInstance, MAKEINTRESOURCE(IDM_V2));
-	MainWindow wnd;
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)hMenu);
-	// set icons
-	HICON hib = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
-	PostMessage(wnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
-	HICON his = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_V2), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	PostMessage(wnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(his));
-
-	Application app;
-	return app.Run();
+	main_window w;
+	w.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)::LoadMenu(instance, MAKEINTRESOURCE(IDM_V2)), CW_USEDEFAULT, CW_USEDEFAULT, 400, 320);
+	vsite::nwp::set_icons(instance, w, IDI_V2);
+	vsite::nwp::application app;
+	return app.run();
 }
