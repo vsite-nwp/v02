@@ -64,10 +64,10 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	// 
 	// TODO: disable "Remove" button
 
-	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD );
-	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE );
-	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,"edit",IDC_EDIT );
-	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,"list",IDC_LB )
+	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 40, 100, 20 );
+	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
+	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "" ,IDC_EDIT, 150 ,10 ,100,20 );
+	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 50, 150, 150);
 
 
 	return 0;
