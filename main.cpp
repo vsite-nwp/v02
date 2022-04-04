@@ -15,21 +15,21 @@ using namespace std;
 
 class button : public vsite::nwp::window {
 
-	string class_name{
+	string class_name(){
 		return "button";
 	}
 };
 
 class edit : public vsite::nwp::window {
 
-	string class_name{
+	string class_name(){
 		return "edit";
 	}
-}
+};
 
 class list_box : public vsite::nwp::window {
 
-	string class_name{
+	string class_name(){
 		return "list_box";
 	}
 };
@@ -44,7 +44,7 @@ class list_box : public vsite::nwp::window {
 // 
 // TODO: derive from window, override class_name
 
-class main_window : public vsite::nwp::window
+class main_window : public vsite::nwp::window  //glavna klasa vec ozvedena
 {
 protected:
 	int on_create(CREATESTRUCT* pcs) override;
@@ -63,6 +63,13 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	// lb.create(*this, WS_CHILD|WS_VISIBLE|WS_BORDER
 	// 
 	// TODO: disable "Remove" button
+
+	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD );
+	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE );
+	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,"edit",IDC_EDIT );
+	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER,"list",IDC_LB )
+
+
 	return 0;
 }
 
