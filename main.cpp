@@ -67,7 +67,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 40, 100, 20 );
 	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
 	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "" ,IDC_EDIT, 150 ,10 ,100,20 );
-	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 50, 150, 150);
+	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 10, 100, 50);
 
 
 	return 0;
@@ -77,12 +77,25 @@ void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
+			on_destroy();
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
+			MessageBox(*this, "NWP V2", "About", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			char addItem[256];
+			//if (GetDlgItem(*this, IDC_EDIT, addItem, sizeof(addItem)) {
+			//	SetDlgItemText(*this, IDC_LB,reinterpret_cast<LPARAM>(addItem);
+			//}
+
+			if (GetDlgItemTextA(*this, IDC_EDIT, addItem, sizeof(addItem))) {
+				SetDlgItemTextA(*this, IDC_LB, addItem);
+
+				SetDlgItemText(*this, IDC_EDIT, "");
+			}
+
 			// TODO: add string to listbox control
 			// TODO: enable "Remove" button
 			break;
@@ -98,6 +111,8 @@ void main_window::on_command(int id){
 			break;
 	}
 }
+
+
 
 void main_window::on_destroy(){
 	::PostQuitMessage(0);
