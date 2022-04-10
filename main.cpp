@@ -110,6 +110,15 @@ void main_window::on_command(int id){
 			//if(index)
 			//SendDialogItemMesage
 
+			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (index) {
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, static_cast<WPARAM>(index), 0);
+
+				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0)) {
+					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+				}
+			}
+
 			// TODO: get listbox selection
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
