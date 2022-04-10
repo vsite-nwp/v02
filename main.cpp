@@ -65,7 +65,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	// TODO: disable "Remove" button
 
 	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 40, 100, 20 );
-	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
+	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
 	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "" ,IDC_EDIT, 150 ,10 ,100,20 );
 	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 10, 100, 50);
 
@@ -91,9 +91,14 @@ void main_window::on_command(int id){
 			//}
 
 			if (GetDlgItemTextA(*this, IDC_EDIT, addItem, sizeof(addItem))) {
-				SetDlgItemTextA(*this, IDC_LB, addItem);
+				//SetDlgItemTextA(*this, IDC_LB, addItem);
+				//SendMessage(this*,IDC_LB,LB_ADDSTRING,addItem);
+
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(addItem));
 
 				SetDlgItemText(*this, IDC_EDIT, "");
+
+				EnableWindow(GetDlgItem(*this,IDC_REMOVE), true);
 			}
 
 			// TODO: add string to listbox control
