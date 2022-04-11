@@ -1,8 +1,8 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (edit, button, list_box) for child windows
-// TODO: derive from window, override class_name
+// : prepare classes (edit, button, list_box) for child windows
+// : derive from window, override class_name
 
 class Edit : public vsite::nwp::window {
 	std::string class_name() override { return "Edit"; }
@@ -26,8 +26,8 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	// : create all child windows
+	// : disable "Remove" button
 	Button btn1, btn2;
 	ListBox lb;
 	Edit ed;
@@ -49,23 +49,23 @@ void main_window::on_command(int id){
 			MessageBox(*this, "HELP!", "HELP!", MB_OK | MB_ICONQUESTION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			// : get text from edit control
+			// : add string to listbox control
+			// : enable "Remove" button
 			char txt[20];
 			if (GetDlgItemText(*this, IDC_EDIT, txt, sizeof(txt))) {
-				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)txt);
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, LPARAM(txt));
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 				SetDlgItemText(*this, IDC_EDIT, "");
 			}
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			// : get listbox selection
+			// : if there is a selection, delete selected string
+			// : disable "Remove" button if listbox is empty
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (index != LB_ERR) {
-				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, (WPARAM)index, 0);
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, WPARAM(index), 0);
 				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0))
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 				break;
