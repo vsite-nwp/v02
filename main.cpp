@@ -55,7 +55,7 @@ void main_window::on_command(int id){
 		case IDC_ADD:
 			char addItem[256];
 
-			if (GetDlgItemTextA(*this, IDC_EDIT, addItem, sizeof(addItem))) {
+			if (GetDlgItemText(*this, IDC_EDIT, addItem, sizeof(addItem))) {
 
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(addItem));
 
