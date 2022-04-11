@@ -8,3 +8,4 @@
 #define IDM_V2			400
 #define ID_FILE_EXIT	401
 #define ID_HELP_ABOUT	402
+
