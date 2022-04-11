@@ -2,6 +2,7 @@
 #include "res.h"
 
 
+
 // : prepare classes (edit, button, list_box) for child windows
 // : derive from window, override class_name
 
