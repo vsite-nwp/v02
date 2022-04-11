@@ -3,16 +3,6 @@
 
 using namespace std;
 
-//sve samo pisati u main.cpp
-
-// TODO: prepare classes (edit, button, list_box) for child windows
-// 
-
-//class edit() {};
-//class button:public vsite::nwp::window{};
-//class list_box() {};
-
-
 class button : public vsite::nwp::window {
 
 	string class_name(){
@@ -34,17 +24,7 @@ class list_box : public vsite::nwp::window {
 	}
 };
 
-// izvedene klase
-// 
-// 
-// class button : public vsite::nwp::window{
-// protected:
-//	std::string class_name() override {return "BUTTON}
-// 
-// 
-// TODO: derive from window, override class_name
-
-class main_window : public vsite::nwp::window  //glavna klasa vec ozvedena
+class main_window : public vsite::nwp::window
 {
 protected:
 	int on_create(CREATESTRUCT* pcs) override;
@@ -54,16 +34,6 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// 
-	// button b1;
-	// b1.create(*this, WS_CHILD|WS_VISIBLE, "Add", IDC_ADD
-	// 
-	// list_box lb;
-	// lb.create(*this, WS_CHILD|WS_VISIBLE|WS_BORDER
-	// 
-	// TODO: disable "Remove" button
-
 	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 40, 100, 20 );
 	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
 	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "" ,IDC_EDIT, 150 ,10 ,100,20 );
@@ -76,23 +46,16 @@ int main_window::on_create(CREATESTRUCT* pcs)
 void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
 			on_destroy();
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+
 			MessageBox(*this, "NWP V2", "About", MB_OK);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
 			char addItem[256];
-			//if (GetDlgItem(*this, IDC_EDIT, addItem, sizeof(addItem)) {
-			//	SetDlgItemText(*this, IDC_LB,reinterpret_cast<LPARAM>(addItem);
-			//}
 
 			if (GetDlgItemTextA(*this, IDC_EDIT, addItem, sizeof(addItem))) {
-				//SetDlgItemTextA(*this, IDC_LB, addItem);
-				//SendMessage(this*,IDC_LB,LB_ADDSTRING,addItem);
 
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(addItem));
 
@@ -101,14 +64,8 @@ void main_window::on_command(int id){
 				EnableWindow(GetDlgItem(*this,IDC_REMOVE), true);
 			}
 
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
 			break;
 		case IDC_REMOVE:
-
-			//int index = SendDialogItemMEssage(*this, IDC_LB, LB_GETCURSEL,o0,0);
-			//if(index)
-			//SendDialogItemMesage
 
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (index!=LB_ERR) {
@@ -118,11 +75,6 @@ void main_window::on_command(int id){
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 				}
 			}
-			
-
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
 			break;
 	}
 }
