@@ -30,7 +30,7 @@ class edit : public vsite::nwp::window {
 class list_box : public vsite::nwp::window {
 
 	string class_name(){
-		return "list_box";
+		return "listbox";
 	}
 };
 
@@ -67,7 +67,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	button add; add.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 150, 40, 100, 20 );
 	button remove; remove.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "Remove", IDC_REMOVE, 150, 70, 100, 20 );
 	edit edit; edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "" ,IDC_EDIT, 150 ,10 ,100,20 );
-	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 10, 100, 50);
+	list_box list_box; list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 20, 10, 100, 90);
 
 
 	return 0;
@@ -111,13 +111,14 @@ void main_window::on_command(int id){
 			//SendDialogItemMesage
 
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-			if (index) {
+			if (index!=LB_ERR) {
 				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, static_cast<WPARAM>(index), 0);
 
 				if (!SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0)) {
 					EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 				}
 			}
+			
 
 			// TODO: get listbox selection
 			// TODO: if there is a selection, delete selected string
