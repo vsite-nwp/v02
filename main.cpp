@@ -49,9 +49,9 @@ void main_window::on_command(int id){
 			break;
 		case IDC_ADD:
 			char text[15];
-			int succes;
-			succes = GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
-			if (succes) {
+			int success;
+			success = GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
+			if (success) {
 				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 				SetDlgItemText(*this, IDC_EDIT, "");
@@ -59,11 +59,12 @@ void main_window::on_command(int id){
 			break;
 		case IDC_REMOVE:
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (index == LB_ERR)
+				break;
 			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index, 0);
 			int count = (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0));
 			if (!count)
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
-
 			break;
 	}
 }
