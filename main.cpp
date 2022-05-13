@@ -2,8 +2,8 @@
 #include "res.h"
 #include "windows.h"
 
-// TODO: prepare classes (edit, button, list_box) for child windows
-// TODO: derive from window, override class_name
+// : prepare classes (edit, button, list_box) for child windows
+// : derive from window, override class_name
 class button :public vsite::nwp::window {
 protected:
 	std::string class_name() override { return "button"; }
@@ -26,7 +26,7 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
+	// : create all child windows
 	button b1, b2;
 	edit e1;
 	list_box lb;
@@ -35,7 +35,7 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	e1.create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 250, 80, 100, 30);
 	lb.create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_LB, 80, 80, 160, 170);
 	EnableWindow(b2, false);
-	// TODO: disable "Remove" button
+	// : disable "Remove" button
 	return 0;
 }
 
