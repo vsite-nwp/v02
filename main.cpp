@@ -26,7 +26,6 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// : create all child windows
 	button b1, b2;
 	edit e1;
 	list_box lb;
@@ -35,7 +34,6 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	e1.create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_EDIT, 250, 80, 100, 30);
 	lb.create(*this, WS_VISIBLE | WS_CHILD | WS_BORDER, "", IDC_LB, 80, 80, 160, 170);
 	EnableWindow(b2, false);
-	// : disable "Remove" button
 	return 0;
 }
 
@@ -46,7 +44,6 @@ void main_window::on_command(int id){
 			break;
 		case ID_HELP_ABOUT:
 			MessageBox(*this, "HELP WITH SOLUTION", "HELP", MB_OK);
-			// : show dialog with text
 			break;
 		case IDC_ADD:
 			char s[128];
@@ -55,9 +52,7 @@ void main_window::on_command(int id){
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 				SetDlgItemText(*this, IDC_EDIT, "");
 			}
-			// : get text from edit control
-			// : add string to listbox control
-			// : enable "Remove" button
+	
 			break;
 		case IDC_REMOVE:
 			int ind = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
@@ -70,9 +65,7 @@ void main_window::on_command(int id){
 			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0) {
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
-			// : get listbox selection
-			// : if there is a selection, delete selected string
-			// : disable "Remove" button if listbox is empty
+		
 			break;
 	}
 }
