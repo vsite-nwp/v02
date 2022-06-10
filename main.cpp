@@ -2,10 +2,6 @@
 #include "res.h"
 
 
-
-// : prepare classes (edit, button, list_box) for child windows
-// : derive from window, override class_name
-
 class Edit : public vsite::nwp::window {
 protected:
 	std::string class_name()override { 
@@ -37,8 +33,7 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// : create all child windows
-	// : disable "Remove" button
+
 	Button buttonAdd, buttonRemove;
 	buttonAdd.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 125, 50, 100, 20);
 	buttonRemove.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED , "Remove", IDC_REMOVE, 125, 80, 100, 20);
@@ -55,30 +50,24 @@ int main_window::on_create(CREATESTRUCT* pcs)
 void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// : close main window
+			
 			on_destroy();
 			break;
 		case ID_HELP_ABOUT:
-			// : show dialog with text
 			MessageBox(*this, "Help", "Help", MB_OK);
 			break;
 		case IDC_ADD:
-			// : get text from edit control
-			// : add string to listbox control
-			// : enable "Remove" button
+			
 			char text[50];
 			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
 
 			if (text[0] != 0)
-				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, (LPARAM)text);
-			SetDlgItemTextA(*this, IDC_EDIT, "");
+				SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, reinterpret_cast<LPARAM>(text));
+			SetDlgItemText(*this, IDC_EDIT, "");
 
 			EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
 			break;
 		case IDC_REMOVE:
-			// : get listbox selection
-			// : if there is a selection, delete selected string
-			// : disable "Remove" button if listbox is empty
 			int lbIndex = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (lbIndex == LB_ERR)
 				break;
