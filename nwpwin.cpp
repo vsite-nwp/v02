@@ -65,8 +65,12 @@ LRESULT CALLBACK window::proc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
 	window* pw = reinterpret_cast<window*>(::GetWindowLong(hw, 0));
 	switch (msg)
 	{
-		case WM_COMMAND: pw->on_command(LOWORD(wp)); return 0;
-		case WM_DESTROY: pw->on_destroy(); return 0;
+		case WM_COMMAND:
+			pw->on_command(LOWORD(wp), HIWORD(wp));
+			return 0;
+		case WM_DESTROY:
+			pw->on_destroy();
+			return 0;
 	}
 	return ::DefWindowProc(hw, msg, wp, lp);
 }
@@ -77,6 +81,24 @@ void set_icons(HINSTANCE instance, HWND window, int icon_id)
 	::PostMessage(window, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hib));
 	HICON his = (HICON)::LoadImage(instance, MAKEINTRESOURCE(icon_id), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	::PostMessage(window, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(his));
+}
+
+// Listbox window
+std::string
+listboxWindow::class_name() {
+	return "ListBox";
+}
+
+// Edit window
+std::string
+editWindow::class_name() {
+	return "Edit";
+}
+
+// Button window
+std::string
+buttonWindow::class_name() {
+	return "Button";
 }
 
 } // namespace

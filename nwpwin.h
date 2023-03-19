@@ -20,6 +20,11 @@ class window
 	HWND hw { 0 };
 
 protected:
+	HWND lbHandle;
+	HWND editHandle;
+	HWND addHandle;
+	HWND removeHandle;
+
 	virtual std::string class_name();
 	bool register_class(const std::string& name);
 	std::string generate_class_name();
@@ -34,8 +39,26 @@ public:
 	//	messages
 protected:
 	virtual int on_create(CREATESTRUCT*) { return 0; }
-	virtual void on_command(int) { }
+	virtual void on_command(int, int n = 0) { }
 	virtual void on_destroy() { }
+};
+
+class listboxWindow : public window
+{
+protected:
+	std::string class_name() override;
+};
+
+class editWindow : public window
+{
+protected:
+	std::string class_name() override;
+};
+
+class buttonWindow : public window
+{
+protected:
+	std::string class_name() override;
 };
 
 void set_icons(HINSTANCE instance, HWND window, int icon_id);
