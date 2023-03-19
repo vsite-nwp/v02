@@ -52,6 +52,13 @@ window::operator HWND()
 	return hw;
 }
 
+
+std::string list_box::class_name() { return "listBox"; };
+
+std::string edit::class_name() { return "edit"; };
+
+std::string button::class_name() { return "button"; };
+
 LRESULT CALLBACK window::proc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
 {
 	if (msg == WM_CREATE) {

@@ -38,6 +38,23 @@ protected:
 	virtual void on_destroy() { }
 };
 
+class list_box : public window
+{
+protected:
+	std::string class_name() override;
+};
+
+class edit : public window
+{
+protected:
+	std::string class_name() override;
+};
+class button : public window
+{
+protected:
+	std::string class_name() override;
+};
+
 void set_icons(HINSTANCE instance, HWND window, int icon_id);
 
 } // namespace
