@@ -39,8 +39,11 @@ int main_window::on_create(CREATESTRUCT* pcs)
 		"Remove", IDC_REMOVE, 200, 95, 150, 21);	// props
 	this->removeButton = removeButton;
 
-	if (!success) on_destroy();
-
+	if (!success)
+	{
+		if (IDOK == MessageBox(*this, "An error occured.", "FATAL ERROR", MB_OK))
+			on_destroy();
+	}
 	return 0;
 }
 
