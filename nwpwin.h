@@ -20,10 +20,8 @@ class window
 	HWND hw { 0 };
 
 protected:
-	HWND lbHandle;
-	HWND editHandle;
-	HWND addHandle;
-	HWND removeHandle;
+	HWND addButton;
+	HWND removeButton;
 
 	virtual std::string class_name();
 	bool register_class(const std::string& name);

@@ -16,30 +16,28 @@ int main_window::on_create(CREATESTRUCT* pcs)
 	// ListBox
 	vsite::nwp::listboxWindow lbWindow;
 	success = lbWindow.create(*this,
-		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW,	// style
-		"", IDC_LB, 25, 25, 150, 200);				// props
-	lbHandle = GetDlgItem(*this, IDC_LB);
+		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW | WS_VSCROLL,	// style
+		"", IDC_LB, 25, 25, 150, 200);							// props
 
 	// Edit field
 	vsite::nwp::editWindow editWindow;
 	success = success && editWindow.create(*this,
 		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW,	// style
 		"", IDC_EDIT, 200, 25, 150, 21);			// props
-	editHandle = GetDlgItem(*this, IDC_EDIT);
 
 	// Add button
 	vsite::nwp::buttonWindow addButton;
 	success = success && addButton.create(*this,
 		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW | WS_DISABLED,	// style
-		"Add", IDC_ADD, 200, 60, 150, 21);			// props
-	addHandle = GetDlgItem(*this, IDC_ADD);
+		"Add", IDC_ADD, 200, 60, 150, 21);						// props
+	this->addButton = addButton;
 
 	// Add button
 	vsite::nwp::buttonWindow removeButton;
 	success = success && removeButton.create(*this,
 		WS_VISIBLE | WS_CHILDWINDOW | WS_DISABLED,	// style
 		"Remove", IDC_REMOVE, 200, 95, 150, 21);	// props
-	removeHandle = GetDlgItem(*this, IDC_REMOVE);
+	this->removeButton = removeButton;
 
 	if (!success) on_destroy();
 
@@ -53,14 +51,12 @@ void main_window::on_command(int id, int not){
 	switch(id){
 		case IDC_EDIT:
 			if (not == EN_CHANGE) {
-				GetDlgItemTextA(*this, IDC_EDIT, msg, maxMsgSize);
+				GetDlgItemText(*this, IDC_EDIT, msg, maxMsgSize);
 				if (msg[0] != 0) {
-					EnableWindow(addHandle, true);
-					SetFocus(addHandle);
-					// TODO: intercept Enter key to add to list
+					EnableWindow(addButton, true);					
 				}
 				else {
-					EnableWindow(addHandle, false);
+					EnableWindow(addButton, false);
 				}
 			}
 			break;
@@ -72,19 +68,21 @@ void main_window::on_command(int id, int not){
 			MessageBox(*this, "This is an example of an about area!", "About", MB_OK);
 			break;
 		case IDC_ADD:
-			GetDlgItemTextA(*this, IDC_EDIT, msg, maxMsgSize);
-			SendDlgItemMessageA(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(msg));
-			SetDlgItemTextA(*this, IDC_EDIT, "");
-			EnableWindow(addHandle, false);
-			EnableWindow(removeHandle, true);
+			GetDlgItemText(*this, IDC_EDIT, msg, maxMsgSize);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, NULL, LPARAM(msg));
+			SetDlgItemText(*this, IDC_EDIT, "");
+			EnableWindow(addButton, false);
+			EnableWindow(removeButton, true);
 			break;
 		case IDC_REMOVE:
-			int listItem = SendDlgItemMessageA(*this, IDC_LB, LB_GETCURSEL, 0, 0);
-			SendDlgItemMessageA(*this, IDC_LB, LB_DELETESTRING, listItem, 0);
+			int listItem = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (listItem != LB_ERR) {
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, listItem, 0);
+			}
 
-			int itemCount = SendDlgItemMessageA(*this, IDC_LB, LB_GETCOUNT, 0, 0);
+			int itemCount = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 			if (itemCount == 0) 
-				EnableWindow(removeHandle, false);
+				EnableWindow(removeButton, false);
 			break;
 	}
 }
