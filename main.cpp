@@ -20,21 +20,22 @@ protected:
 	int on_create(CREATESTRUCT* pcs) override;
 	void on_command(int id) override;
 	void on_destroy() override;
+private:
+	edit e;
+	list_box lb;
+	button adb;
+	button rmb;
 };
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
 	// create all child windows
-	list_box lb;
 	lb.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, 0, IDC_LB, 15, 5, 100, 100);
-	edit e;
 	e.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER , 0, IDC_EDIT, 130, 5, 100, 25);
-	button a;
-	a.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 130, 40, 100, 25);
-	button r;
-	r.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 130, 75, 100, 25);
+	adb.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Add", IDC_ADD, 130, 40, 100, 25);
+	rmb.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "Remove", IDC_REMOVE, 130, 75, 100, 25);
 	// disable "Remove" button
-	EnableWindow(r, FALSE);
+	EnableWindow(rmb, FALSE);
 	return 0;
 }
 
@@ -47,7 +48,7 @@ void main_window::on_command(int id){
 
 		case ID_HELP_ABOUT:
 			// show dialog with text
-			MessageBox(NULL, TEXT("Thank you for using the application."), TEXT("Thank You"), MB_OK | MB_ICONINFORMATION);
+			MessageBox(*this, TEXT("Thank you for using the application."), TEXT("Thank You"), MB_OK | MB_ICONINFORMATION);
 			break;
 
 		case IDC_ADD: {
@@ -57,14 +58,12 @@ void main_window::on_command(int id){
 			// add string to listbox control
 			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 			// enable "Remove" button
-			HWND rb = GetDlgItem(*this, IDC_REMOVE);
-			EnableWindow(rb, TRUE);
+			EnableWindow(rmb, TRUE);
 			break;
 		}
 
 		case IDC_REMOVE: {
 			// get listbox selection
-			HWND lb = GetDlgItem(*this, IDC_LB);
 			int i = SendMessage(lb, LB_GETCURSEL, 0, 0);
 			// if there is a selection, delete selected string
 			if (i != LB_ERR) {
@@ -73,8 +72,7 @@ void main_window::on_command(int id){
 			// disable "Remove" button if listbox is empty
 			int n = SendMessage(lb, LB_GETCOUNT, 0, 0);
 			if (n == 0) {
-				HWND rb = GetDlgItem(*this, IDC_REMOVE);
-				EnableWindow(rb, FALSE);
+				EnableWindow(rmb, FALSE);
 			}
 			break;
 		}
