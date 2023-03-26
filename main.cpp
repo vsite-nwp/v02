@@ -4,6 +4,9 @@
 class main_window : public vsite::nwp::window
 {
 protected:
+	vsite::nwp::buttonWindow addButton;
+	vsite::nwp::buttonWindow removeButton;
+	
 	int on_create(CREATESTRUCT* pcs) override;
 	void on_command(int id, int not) override;
 	void on_destroy() override;
