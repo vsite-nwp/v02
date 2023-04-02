@@ -14,39 +14,28 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {	
-	bool success{ false };
-
 	// ListBox
 	vsite::nwp::listboxWindow lbWindow;
-	success = lbWindow.create(*this,
+	lbWindow.create(*this,
 		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW | WS_VSCROLL,	// style
 		"", IDC_LB, 25, 25, 150, 200);							// props
 
 	// Edit field
 	vsite::nwp::editWindow editWindow;
-	success = success && editWindow.create(*this,
+	editWindow.create(*this,
 		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW,	// style
 		"", IDC_EDIT, 200, 25, 150, 21);			// props
 
 	// Add button
-	vsite::nwp::buttonWindow addButton;
-	success = success && addButton.create(*this,
+	addButton.create(*this,
 		WS_VISIBLE | WS_BORDER | WS_CHILDWINDOW | WS_DISABLED,	// style
 		"Add", IDC_ADD, 200, 60, 150, 21);						// props
-	this->addButton = addButton;
 
 	// Add button
-	vsite::nwp::buttonWindow removeButton;
-	success = success && removeButton.create(*this,
+	removeButton.create(*this,
 		WS_VISIBLE | WS_CHILDWINDOW | WS_DISABLED,	// style
 		"Remove", IDC_REMOVE, 200, 95, 150, 21);	// props
-	this->removeButton = removeButton;
 
-	if (!success)
-	{
-		if (IDOK == MessageBox(*this, "An error occured.", "FATAL ERROR", MB_OK))
-			on_destroy();
-	}
 	return 0;
 }
 
