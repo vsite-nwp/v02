@@ -38,7 +38,7 @@ void main_window::on_command(int id){
 			break;
 
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, TEXT("This enterprise solution for all your list box managment needs is brought to you by GDB INC."), TEXT("About"), MB_OK | MB_ICONINFORMATION);
+			MessageBox(*this, TEXT("This enterprise solution for all your list box management needs is brought to you by GDB INC."), TEXT("About"), MB_OK | MB_ICONINFORMATION);
 			break;
 
 		case IDC_ADD:
