@@ -51,7 +51,7 @@ void main_window::on_command(int id) {
 	case IDC_ADD:
 
 		char text[36];
-		GetDlgItemText(*this, IDC_EDIT, text, 20);
+		GetDlgItemText(*this, IDC_EDIT, text, 36);
 
 		SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 
@@ -59,13 +59,13 @@ void main_window::on_command(int id) {
 		break;
 	case IDC_REMOVE:
 
-		int i = SendMessage(lb, LB_GETCURSEL, 0, 0);
+		int i = SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 
 		if (i != LB_ERR) {
-			SendMessage(lb, LB_DELETESTRING, i, 0);
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 		}
 
-		int n = SendMessage(lb, LB_GETCOUNT, 0, 0);
+		int n = SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, (LPARAM)text);
 		if (n == 0) {
 			EnableWindow(btn2, FALSE);
 		}
