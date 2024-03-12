@@ -61,7 +61,7 @@ void main_window::on_command(int id){
 			int i = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			
 			if (i != LB_ERR) {
-				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, 0, 0);
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, i, 0);
 			}
 			
 			int n = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
