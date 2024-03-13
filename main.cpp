@@ -4,27 +4,6 @@
 
 
 
-INT_PTR CALLBACK AboutDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		return TRUE;
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hwndDlg, LOWORD(wParam));
-			return TRUE;
-		}
-		break;
-	}
-	return FALSE;
-}
-
-
-
-
-
 class button : public vsite::nwp::window {
 protected:
 	std::string class_name() override { return "BUTTON"; }
@@ -53,18 +32,16 @@ protected:
 int main_window::on_create(CREATESTRUCT* pcs)
 {
 	// : create all child windows
-	char remove_text[128];
-	::LoadString(0, IDC_REMOVE, remove_text, sizeof(remove_text));
-	char add_text[128];
-	::LoadString(0, IDC_ADD, add_text, sizeof(add_text));
-	
+	char text[128];
+
 	button add;
 	button remove;
 	edit edit;
 	list_box list_box;
-
-	add.create(*this,WS_CHILD| WS_VISIBLE,add_text, IDC_ADD, 100, 50, 80, 24);
-	remove.create(*this,WS_CHILD | WS_VISIBLE,remove_text,IDC_REMOVE, 100, 80, 80, 24);
+	::LoadString(0, IDC_ADD, text, sizeof(text));
+	add.create(*this,WS_CHILD| WS_VISIBLE,text, IDC_ADD, 100, 50, 80, 24);
+	::LoadString(0, IDC_REMOVE, text, sizeof(text));
+	remove.create(*this,WS_CHILD | WS_VISIBLE,text,IDC_REMOVE, 100, 80, 80, 24);
 	edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, 0, IDC_EDIT, 100, 20, 80, 24);
 	list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, 0, IDC_LB, 20, 20, 70, 90);
 	
@@ -77,7 +54,6 @@ int main_window::on_create(CREATESTRUCT* pcs)
 
 void main_window::on_command(int id){
 	switch(id){
-		int textLength;
 		char text[256];
 		HWND hwListBox;
 		HWND hwEdit;
@@ -87,27 +63,22 @@ void main_window::on_command(int id){
 			break;
 		case ID_HELP_ABOUT:
 			// : show dialog with text
-			DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(ID_HELP_ABOUT), 0, AboutDialogProc);
+			MessageBox(*this, "Neki tekst", "About", 0);
 			break;
 		case IDC_ADD:
-			textLength = GetWindowTextLength(GetDlgItem(*this, IDC_EDIT)) + 1;
-			GetWindowText(GetDlgItem(*this, IDC_EDIT), text, textLength);
-			hwListBox = GetDlgItem(*this, IDC_LB);
-			hwEdit = GetDlgItem(*this, IDC_EDIT);
-			SendMessage(hwListBox, LB_ADDSTRING, 0, (LPARAM)text);
+			GetDlgItemText(*this, IDC_EDIT, text, sizeof(text));
+			SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING,0,(LPARAM)text);
 			EnableWindow(GetDlgItem(*this,IDC_REMOVE), true);
 			// : get text from edit control
 			// : add string to listbox control
 			// : enable "Remove" button
 			break;
 		case IDC_REMOVE:
-			int index = SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCURSEL, 0, 0);
-			if (index != LB_ERR)
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0) != LB_ERR)
 			{
-				SendMessage(GetDlgItem(*this, IDC_LB), LB_DELETESTRING, index, 0);
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, 0, SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0));
 			}
-			int count = SendMessage(GetDlgItem(*this, IDC_LB), LB_GETCOUNT, 0, 0);
-			if (count == 0)
+			if (SendDlgItemMessage(*this,IDC_LB,LB_GETCOUNT,0,0) == 0)
 			{
 				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
 			}
