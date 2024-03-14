@@ -59,13 +59,13 @@ void main_window::on_command(int id) {
 		break;
 	case IDC_REMOVE:
 
-		int i = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, (LPARAM)text);
+		int i = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 
 		if (i != LB_ERR) {
-			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, 0, (LPARAM)text);
+			SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, i, 0);
 		}
 
-		int n = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, (LPARAM)text);
+		int n = SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 		if (n == 0) {
 			EnableWindow(btn2, FALSE);
 		}
