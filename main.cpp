@@ -24,6 +24,11 @@ class list_box : public vsite::nwp::window {
 
 class main_window : public vsite::nwp::window
 {
+	edit editBox;
+	button addButton;
+	button removeButton;
+	list_box listBox;
+
 protected:
 	int on_create(CREATESTRUCT* pcs) override;
 	void on_command(int id) override;
@@ -32,14 +37,13 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	edit ew;
-	button bw;
-	list_box lbw;
-	ew.create(pcs->hwndParent, WS_CHILD | WS_VISIBLE);
-	bw.create(pcs->hwndParent, WS_CHILD | WS_VISIBLE);
-	lbw.create(pcs->hwndParent, WS_CHILD | WS_VISIBLE);
 	// TODO: create all child windows
+	editBox.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, 0, IDC_EDIT, 120, 10, 100, 25);
+	addButton.create(*this, WS_CHILD | WS_VISIBLE, "Add", IDC_ADD, 120, 40, 100, 25);
+	removeButton.create(*this, WS_CHILD | WS_VISIBLE, "Remove", IDC_REMOVE, 120, 70, 100, 25);
+	listBox.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, 0, IDC_LB, 10, 10, 100, 100);
 	// TODO: disable "Remove" button
+	::EnableWindow(removeButton, FALSE);
 	return 0;
 }
 
@@ -47,19 +51,34 @@ void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
 			// TODO: close main window
+			on_destroy();
 			break;
 		case ID_HELP_ABOUT:
 			// TODO: show dialog with text
+			::MessageBox(0, "About\nLorem ipsum dolor sit amet.", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
 			// TODO: get text from edit control
+			char s[128];
+			::GetWindowText(editBox, s, sizeof(s));
+			//::GetDlgItemText(editBox, IDC_EDIT, s, sizeof(s));  // Ovo ne znam kako da proradi.
 			// TODO: add string to listbox control
+			::SendMessage(listBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
 			// TODO: enable "Remove" button
+			::EnableWindow(removeButton, TRUE);
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
+			int selectionIndex = ::SendMessage(listBox, LB_GETCURSEL, 0, 0);
 			// TODO: if there is a selection, delete selected string
+			if (selectionIndex != LB_ERR) {
+				::SendMessage(listBox, LB_DELETESTRING, selectionIndex, 0);
+			}
 			// TODO: disable "Remove" button if listbox is empty
+			int count = ::SendMessage(listBox, LB_GETCOUNT, 0, 0);
+			if (count == 0) {
+				::EnableWindow(removeButton, FALSE);
+			}
 			break;
 	}
 }
@@ -71,7 +90,7 @@ void main_window::on_destroy(){
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
 	main_window w; 
-	w.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)::LoadMenu(instance, MAKEINTRESOURCE(IDM_V2)));
+	w.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP 2", (int)::LoadMenu(instance, MAKEINTRESOURCE(IDM_V2)), 0, 0, 280, 200);
 	vsite::nwp::set_icons(instance, w, IDI_V2);
 	vsite::nwp::application app;
 	return app.run();

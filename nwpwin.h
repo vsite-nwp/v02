@@ -47,4 +47,3 @@ protected:
 void set_icons(HINSTANCE instance, HWND window, int icon_id);
 
 } // namespace
-
