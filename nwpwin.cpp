@@ -20,7 +20,7 @@ std::string window::class_name()
 bool window::register_class(const std::string& name)
 {
 	WNDCLASS wc{};
-	wc.lpfnWndProc = proc;
+	wc.lpfnWndProc = proc;  // Pointer na funkciju koja je zadužena za baratanje prozorima ove klase prozora, a koja je static public member funkcija klase window.
 	wc.lpszClassName = name.c_str();
 	wc.cbWndExtra = sizeof(window*);
 
@@ -40,6 +40,13 @@ std::string window::generate_class_name()
 bool window::create(HWND parent, DWORD style, LPCTSTR caption, int id_or_menu,
 	int x, int y, int width, int height)
 {
+	/*class_name je virtualna funkcija. Znaèi ako ju overrideamo i damo
+	neki class name tipa button ili listbox, pa string 'cn' ne bude
+	prazan, æe zvati CreateWindow s njim.
+	Ako je 'cn' prazan string, onda æe se izmisliti novi string pomoæu
+	generate_class_name funkcije i pozvati register_class s tim imenom.
+	Dakle možemo praktièki zaboraviti na cijelu prièu oko registracije.
+	U našem mainu se izvedemo iz bazne klase Window i pozovemo create.*/
 	std::string cn = class_name();
 	if (cn.empty())
 		register_class(cn = generate_class_name());
