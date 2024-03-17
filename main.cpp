@@ -55,7 +55,7 @@ void main_window::on_command(int id){
 			break;
 		case ID_HELP_ABOUT:
 			// Show dialog with text.
-			::MessageBox(0, "About\nLorem ipsum dolor sit amet.", "NWP 2", MB_OK);
+			::MessageBox(*this, "About\nLorem ipsum dolor sit amet.", "NWP 2", MB_OK);
 			break;
 		case IDC_ADD:
 			// Get text from edit control.
@@ -64,8 +64,7 @@ void main_window::on_command(int id){
 			// Add string to listbox control.
 			::SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
 			// Clear edit control.
-			::SendDlgItemMessage(*this, IDC_EDIT, WM_UNDO, 0, 0);
-			::SendDlgItemMessage(*this, IDC_EDIT, WM_CLEAR, 0, 0);
+			::SetDlgItemText(*this, IDC_EDIT, "");
 			// Enable "Remove" button.
 			::EnableWindow(removeButton, TRUE);
 			break;
