@@ -1,8 +1,23 @@
 #include "nwpwin.h"
 #include "res.h"
 
-// TODO: prepare classes (edit, button, list_box) for child windows
-// TODO: derive from window, override class_name
+// prepare classes (edit, button, list_box) for child windows
+// derive from window, override class_name
+
+class Edit: public vsite::nwp::window {
+protected:
+	std::string class_name() override { return "Edit"; }
+};
+
+class Button: public vsite::nwp::window {
+protected:
+	std::string class_name() override { return "Button"; }
+};
+
+class ListBox:public vsite::nwp::window {
+protected:
+	std::string class_name() override { return "List box"; }
+};
 
 class main_window : public vsite::nwp::window
 {
@@ -14,28 +29,61 @@ protected:
 
 int main_window::on_create(CREATESTRUCT* pcs)
 {
-	// TODO: create all child windows
-	// TODO: disable "Remove" button
+	// create all child windows
+	// disable "Remove" button
+
+	Edit edit;
+	ListBox list_box;
+	Button add_button, remove_button;
+
+
+	list_box.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_LB, 25, 25, 100, 120);
+	edit.create(*this, WS_CHILD | WS_VISIBLE | WS_BORDER, "", IDC_EDIT, 135, 25, 100, 25);
+	add_button.create(*this, WS_CHILD | WS_VISIBLE, "ADD", IDC_ADD, 135, 55, 100, 25);
+	remove_button.create(*this, WS_CHILD | WS_VISIBLE | WS_DISABLED, "REMOVE", IDC_REMOVE, 135, 85, 100, 25);
+	
+
+
+
 	return 0;
 }
 
 void main_window::on_command(int id){
 	switch(id){
 		case ID_FILE_EXIT:
-			// TODO: close main window
+			// close main window
+			::DestroyWindow(*this);
 			break;
 		case ID_HELP_ABOUT:
-			// TODO: show dialog with text
+			// show dialog with text
+			MessageBox(*this, "NWP solution 2", "NWP 2", MB_OK | MB_ICONINFORMATION);
 			break;
 		case IDC_ADD:
-			// TODO: get text from edit control
-			// TODO: add string to listbox control
-			// TODO: enable "Remove" button
+			// get text from edit control
+			// add string to listbox control
+			// enable "Remove" button
+
+			char s[128];
+			if (GetDlgItemText(*this, IDC_EDIT, s, sizeof(s)))
+			{
+				SendMessage(GetDlgItem(*this, IDC_LB), LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), true);
+				SetDlgItemText(*this, IDC_EDIT, "");
+			}
+
 			break;
 		case IDC_REMOVE:
 			// TODO: get listbox selection
 			// TODO: if there is a selection, delete selected string
 			// TODO: disable "Remove" button if listbox is empty
+
+			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
+			if (index != LB_ERR) {
+				SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, index,0);
+			}
+			if (SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0) == 0) {
+				EnableWindow(GetDlgItem(*this, IDC_REMOVE), false);
+			}
 			break;
 	}
 }
