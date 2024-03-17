@@ -62,8 +62,8 @@ void main_window::on_command(int id){
 			char s[128];
 			::GetDlgItemText(*this, IDC_EDIT, s, sizeof(s));
 			// Add string to listbox control.
-			::SendMessage(listBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
-			// Clear listbox control.
+			::SendDlgItemMessage(*this, IDC_LB, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
+			// Clear edit control.
 			::SendDlgItemMessage(*this, IDC_EDIT, WM_UNDO, 0, 0);
 			::SendDlgItemMessage(*this, IDC_EDIT, WM_CLEAR, 0, 0);
 			// Enable "Remove" button.
@@ -71,13 +71,13 @@ void main_window::on_command(int id){
 			break;
 		case IDC_REMOVE:
 			// Get listbox selection.
-			int selectionIndex = ::SendMessage(listBox, LB_GETCURSEL, 0, 0);
+			int selectionIndex = ::SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			// If there is a selection, delete selected string.
 			if (selectionIndex != LB_ERR) {
-				::SendMessage(listBox, LB_DELETESTRING, selectionIndex, 0);
+				::SendDlgItemMessage(*this, IDC_LB, LB_DELETESTRING, selectionIndex, 0);
 			}
 			// Disable "Remove" button if listbox is empty.
-			int count = ::SendMessage(listBox, LB_GETCOUNT, 0, 0);
+			int count = ::SendDlgItemMessage(*this, IDC_LB, LB_GETCOUNT, 0, 0);
 			if (count == 0) {
 				::EnableWindow(removeButton, FALSE);
 			}
