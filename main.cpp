@@ -60,10 +60,15 @@ void main_window::on_command(int id){
 		case IDC_ADD:
 			// TODO: get text from edit control
 			char s[128];
-			::GetWindowText(editBox, s, sizeof(s));
-			//::GetDlgItemText(editBox, IDC_EDIT, s, sizeof(s));  // Ovo ne znam kako da proradi.
+			::GetDlgItemText(*this, IDC_EDIT, s, sizeof(s));
+			//ili
+			//::GetWindowText(editBox, s, sizeof(s));
 			// TODO: add string to listbox control
 			::SendMessage(listBox, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s));
+			::SendDlgItemMessage(*this, IDC_EDIT, WM_UNDO, 0, 0);
+			//ili
+			//::SendMessage(editBox, WM_UNDO, 0, 0);
+			::SendMessage(editBox, WM_CLEAR, 0, 0);
 			// TODO: enable "Remove" button
 			::EnableWindow(removeButton, TRUE);
 			break;
