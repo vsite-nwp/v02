@@ -5,6 +5,11 @@
 
 #define IDI_V2 201
 
+#define IDS_ABOUT_US 301
+#define IDS_ABOUT_CAPTION 302
+#define IDS_ADD 303
+#define IDS_REMOVE 304
+
 #define IDM_V2			400
 #define ID_FILE_EXIT	401
 #define ID_HELP_ABOUT	402
