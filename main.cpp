@@ -16,7 +16,7 @@ protected:
 
 class ListBox:public vsite::nwp::window {
 protected:
-	std::string class_name() override { return "List box"; }
+	std::string class_name() override { return "ListBox"; }
 };
 
 class main_window : public vsite::nwp::window
@@ -73,9 +73,9 @@ void main_window::on_command(int id){
 
 			break;
 		case IDC_REMOVE:
-			// TODO: get listbox selection
-			// TODO: if there is a selection, delete selected string
-			// TODO: disable "Remove" button if listbox is empty
+			//  get listbox selection
+			// : if there is a selection, delete selected string
+			// : disable "Remove" button if listbox is empty
 
 			int index = SendDlgItemMessage(*this, IDC_LB, LB_GETCURSEL, 0, 0);
 			if (index != LB_ERR) {
