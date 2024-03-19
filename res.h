@@ -1,7 +1,9 @@
 #define IDC_ADD 101
 #define IDC_REMOVE 102
-#define IDC_EDIT 103
-#define IDC_LB 104
+#define IDC_CLEAR 103
+#define IDC_EDIT 104
+#define IDC_LB 105
+#define IDC_LBL 106
 
 #define IDI_V2 201
 

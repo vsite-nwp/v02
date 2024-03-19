@@ -65,6 +65,7 @@ LRESULT CALLBACK window::proc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
 	window* pw = reinterpret_cast<window*>(::GetWindowLong(hw, 0));
 	switch (msg)
 	{
+		//Mogu se dodati druge komande s ostalim msg casevima
 		case WM_COMMAND: pw->on_command(LOWORD(wp)); return 0;
 		case WM_DESTROY: pw->on_destroy(); return 0;
 	}
