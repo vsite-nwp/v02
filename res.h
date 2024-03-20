@@ -3,6 +3,9 @@
 #define IDC_EDIT 103
 #define IDC_LB 104
 #define IDC_CLEAR 105
+#define IDC_RANDOM 106
+#define IDC_EDIT_LABEL 107
+#define IDC_LB_LABEL 108
 
 #define IDI_V2 201
 
